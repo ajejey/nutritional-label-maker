@@ -9,7 +9,7 @@ import { CanadaNutritionLabel } from "./components/canada-nutrition-label";
 import { NutritionData, LabelFormat } from "./types/nutrition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Download } from "lucide-react";
+import { ChevronDown, Download, Globe2, ShieldCheck, Zap } from "lucide-react";
 import * as htmlToImage from "html-to-image";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { labelInfo } from "./labelInfo";
@@ -73,6 +73,77 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-50 py-8">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              Create Professional Nutrition Labels
+              <span className="block text-blue-600">in Seconds</span>
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
+              Generate FDA-compliant nutrition facts labels and EU nutrition declarations instantly. Perfect for food manufacturers, restaurants, and health professionals.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Button
+                size="lg"
+                className="text-lg px-8"
+                onClick={() => document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                Get Started
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="py-24 bg-gray-50">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Everything you need for compliant nutrition labels
+            </h2>
+          </div>
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-3">
+              <div className="flex flex-col items-start">
+                <div className="rounded-lg bg-blue-600 p-2 ring-1 ring-blue-600/10">
+                  <Globe2 className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="mt-6 text-xl font-semibold text-gray-900">
+                  US & EU Formats
+                </h3>
+                <p className="mt-2 text-base text-gray-600">
+                  Switch between FDA-compliant Nutrition Facts and EU-standard declarations with a single click.
+                </p>
+              </div>
+              <div className="flex flex-col items-start">
+                <div className="rounded-lg bg-blue-600 p-2 ring-1 ring-blue-600/10">
+                  <Zap className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="mt-6 text-xl font-semibold text-gray-900">
+                  Instant Generation
+                </h3>
+                <p className="mt-2 text-base text-gray-600">
+                  Create professional nutrition labels in seconds with our easy-to-use form and real-time preview.
+                </p>
+              </div>
+              <div className="flex flex-col items-start">
+                <div className="rounded-lg bg-blue-600 p-2 ring-1 ring-blue-600/10">
+                  <ShieldCheck className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="mt-6 text-xl font-semibold text-gray-900">
+                  Compliance Ready
+                </h3>
+                <p className="mt-2 text-base text-gray-600">
+                  All labels are designed to meet current FDA and EU regulatory requirements.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-center mb-8">
           Nutrition Label Generator
