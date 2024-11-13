@@ -84,7 +84,7 @@ export default function Home() {
             <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
               Generate FDA-compliant nutrition facts labels and EU nutrition declarations instantly. Perfect for food manufacturers, restaurants, and health professionals.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
+            {/* <div className="mt-10 flex items-center justify-center gap-x-6">
               <Button
                 size="lg"
                 className="text-lg px-8"
@@ -92,7 +92,7 @@ export default function Home() {
               >
                 Get Started
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
