@@ -9,7 +9,7 @@ import { AnalyticsProvider } from "./providers/analytics-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://nutritionlabelmaker.com'),
+  metadataBase: new URL('https://nutrition-label-maker.vercel.app/'),
   title: {
     default: 'Nutrition Label Generator | Create Custom Nutrition Facts Labels',
     template: '%s | Nutrition Label Generator'
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://nutritionlabelmaker.com',
+    url: 'https://nutrition-label-maker.vercel.app/',
     siteName: 'Nutrition Label Generator',
     title: 'Create Professional Nutrition Facts Labels Online',
     description: 'Generate FDA-compliant nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     creator: '@nutritionlabelmaker',
   },
   alternates: {
-    canonical: 'https://nutritionlabelmaker.com',
+    canonical: 'https://nutrition-label-maker.vercel.app/',
   },
   manifest: '/site.webmanifest',
 }

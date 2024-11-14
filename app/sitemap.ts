@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
  
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://nutritionlabelmaker.com'
+  const baseUrl = 'https://nutrition-label-maker.vercel.app'
   
   return [
     {
