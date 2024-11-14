@@ -17,4 +17,4 @@ export type NutritionData = {
   potassium: number;
 };
 
-export type LabelFormat = 'US' | 'EU' | 'INDIAN' | 'CANADA';
+export type LabelFormat = 'US' | 'EU' | 'INDIAN' | 'CANADA' | 'AUSTRALIA';

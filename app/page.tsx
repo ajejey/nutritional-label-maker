@@ -1,104 +1,35 @@
-"use client";
-
-import { useState } from "react";
-import { NutritionForm } from "./components/nutrition-form";
-import { USNutritionLabel } from "./components/us-nutrition-label";
-import { EUNutritionLabel } from "./components/eu-nutrition-label";
-import { IndianNutritionalLabel } from "./components/IndianNutritionalLabel";
-import { CanadaNutritionLabel } from "./components/canada-nutrition-label";
-import { NutritionData, LabelFormat } from "./types/nutrition";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Globe2, ShieldCheck, Zap, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Download, Globe2, ShieldCheck, Zap } from "lucide-react";
-import * as htmlToImage from "html-to-image";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { labelInfo } from "./labelInfo";
+import Link from "next/link";
 
 export default function Home() {
-  const [nutritionData, setNutritionData] = useState<NutritionData | null>(null);
-  const [format, setFormat] = useState<LabelFormat>("US");
-  const [isDownloading, setIsDownloading] = useState(false);
-
-  const handleSubmit = (data: NutritionData) => {
-    setNutritionData(data);
-  };
-
-  const downloadLabel = async () => {
-    const element = document.getElementById("nutrition-label");
-    if (!element || isDownloading) return;
-
-    try {
-      setIsDownloading(true);
-
-      // Define the desired DPI for printing
-      const desiredDPI = 300;
-      // Calculate scale factor (assuming screen DPI is 96, which is common for many displays)
-      const scaleFactor = desiredDPI / 96;
-
-      const width = element.offsetWidth * scaleFactor;
-      const height = element.offsetHeight * scaleFactor;
-
-      const dataUrl = await htmlToImage.toPng(element, {
-        width: width,
-        height: height,
-        style: {
-          transform: `scale(${scaleFactor})`,
-          transformOrigin: 'top left',
-          width: `${element.offsetWidth}px`,
-          height: `${element.offsetHeight}px`,
-        },
-        quality: 1.0,
-      });
-
-      const link = document.createElement("a");
-      link.download = `nutrition-label-${format.toLowerCase()}-${new Date().getTime()}.png`;
-      link.href = dataUrl;
-      link.click();
-    } catch (error) {
-      console.error("Error generating image:", error);
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
-  const labelComponents = {
-    US: USNutritionLabel,
-    EU: EUNutritionLabel,
-    INDIAN: IndianNutritionalLabel,
-    CANADA: CanadaNutritionLabel,
-    // Add more label components here as you create them
-  };
-
-  const LabelComponent = labelComponents[format];
-
   return (
-    <main className="min-h-screen bg-gray-50 py-8">
+    <main className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-white">
+      <div className="relative overflow-hidden bg-gradient-to-b from-white to-blue-50">
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Create Professional Nutrition Labels
-              <span className="block text-blue-600">in Seconds</span>
+              <span className="block text-primary">in Seconds</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-              Generate FDA-compliant nutrition facts labels and EU nutrition declarations instantly. Perfect for food manufacturers, restaurants, and health professionals.
+              Generate FDA-compliant nutrition facts labels and international nutrition declarations instantly. 
+              Perfect for food manufacturers, restaurants, and health professionals.
             </p>
-            {/* <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Button
-                size="lg"
-                className="text-lg px-8"
-                onClick={() => document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Get Started
-              </Button>
-            </div> */}
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Link href="/generator">
+                <Button size="lg" className="text-lg px-8 bg-primary hover:bg-primary/90">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Features Section */}
-      <div className="py-24 bg-gray-50">
+      <div className="py-24 bg-secondary" id="features">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -108,18 +39,18 @@ export default function Home() {
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
             <div className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-3">
               <div className="flex flex-col items-start">
-                <div className="rounded-lg bg-blue-600 p-2 ring-1 ring-blue-600/10">
+                <div className="rounded-lg bg-primary p-2 ring-1 ring-primary/10">
                   <Globe2 className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-gray-900">
-                  US & EU Formats
+                  International Formats
                 </h3>
                 <p className="mt-2 text-base text-gray-600">
-                  Switch between FDA-compliant Nutrition Facts and EU-standard declarations with a single click.
+                  Support for US, EU, Canadian, Indian, and Australian nutrition label formats. Switch between formats with a single click.
                 </p>
               </div>
               <div className="flex flex-col items-start">
-                <div className="rounded-lg bg-blue-600 p-2 ring-1 ring-blue-600/10">
+                <div className="rounded-lg bg-primary p-2 ring-1 ring-primary/10">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-gray-900">
@@ -130,86 +61,149 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-col items-start">
-                <div className="rounded-lg bg-blue-600 p-2 ring-1 ring-blue-600/10">
+                <div className="rounded-lg bg-primary p-2 ring-1 ring-primary/10">
                   <ShieldCheck className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-gray-900">
                   Compliance Ready
                 </h3>
                 <p className="mt-2 text-base text-gray-600">
-                  All labels are designed to meet current FDA and EU regulatory requirements.
+                  All labels are designed to meet current regulatory requirements for their respective regions.
                 </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Nutrition Label Generator
-        </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-6">Enter Nutrition Data</h2>
-            <NutritionForm onSubmit={handleSubmit} />
+      {/* How It Works Section */}
+      <div className="py-24 bg-white">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-16">
+              Create Your Nutrition Label in 3 Simple Steps
+            </h2>
           </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            {[
+              {
+                step: "1",
+                title: "Enter Your Data",
+                description: "Input your product's nutritional information using our simple form.",
+              },
+              {
+                step: "2",
+                title: "Choose Format",
+                description: "Select from US, EU, Canadian, Indian, or Australian label formats.",
+              },
+              {
+                step: "3",
+                title: "Download & Use",
+                description: "Get your high-resolution nutrition label ready for packaging.",
+              },
+            ].map((item) => (
+              <div key={item.step} className="relative pl-16">
+                <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white font-bold">
+                  {item.step}
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">{item.title}</h3>
+                <p className="mt-2 text-gray-600">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold">Label Preview</h2>
+      {/* Benefits Section */}
+      <div className="py-24 bg-secondary">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center mb-16">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Why Choose Our Nutrition Label Generator?
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              "Compliant with FDA, EU, and international standards",
+              "High-resolution output suitable for packaging",
+              "Real-time preview of your nutrition label",
+              "Multiple format support for global markets",
+              "Easy-to-use interface with guided inputs",
+              "Instant downloads in various formats",
+              "Regular updates to match regulation changes",
+              "Accurate calculations and formatting",
+              "Time and cost-effective solution",
+            ].map((benefit, index) => (
+              <div key={index} className="flex items-start space-x-3">
+                <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0" />
+                <span className="text-gray-600">{benefit}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="py-24 bg-white">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center mb-16">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Frequently Asked Questions
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-5xl mx-auto">
+            {[
+              {
+                q: "Is this nutrition label generator free to use?",
+                a: "Yes, our nutrition label generator is completely free to use. Create and download as many labels as you need.",
+              },
+              {
+                q: "Are the labels FDA compliant?",
+                a: "Yes, our US nutrition labels follow all FDA guidelines and requirements for nutrition facts panels.",
+              },
+              {
+                q: "Can I use these labels for my food products?",
+                a: "Yes, you can use these labels for your food products. However, we recommend verifying the information with your local food safety authority.",
+              },
+              {
+                q: "What file format do I receive?",
+                a: "You receive a high-resolution PNG file that's suitable for both digital use and print packaging.",
+              },
+              {
+                q: "Do you support international formats?",
+                a: "Yes, we support US, EU, Canadian, Indian, and Australian nutrition label formats, with more coming soon.",
+              },
+              {
+                q: "How accurate are the calculations?",
+                a: "Our calculator follows standard rounding rules and formatting guidelines for each region's requirements.",
+              },
+            ].map((faq, index) => (
+              <div key={index} className="space-y-3">
+                <h3 className="text-lg font-semibold text-gray-900">{faq.q}</h3>
+                <p className="text-gray-600">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="bg-primary py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              Ready to create your nutrition label?
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-primary-foreground/90">
+              Join thousands of food manufacturers and professionals who trust our nutrition label generator.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Link href="/generator">
+                <Button size="lg" variant="secondary" className="text-lg px-8">
+                  Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
             </div>
-
-            {nutritionData ? (
-              <div className="flex flex-col items-center">
-                <div className="w-full mb-6 flex justify-between items-center">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline">
-                        {format} Format <ChevronDown className="ml-2 h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      {Object.keys(labelComponents).map((key) => (
-                        <DropdownMenuItem key={key} onSelect={() => setFormat(key as LabelFormat)}>
-                          {key} Format
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-
-                  <Button
-                    onClick={downloadLabel}
-                    variant="outline"
-                    disabled={isDownloading}
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    {isDownloading ? "Generating..." : "Download High-Res"}
-                  </Button>
-                </div>
-
-                <div className="flex justify-center">
-                  {LabelComponent && <LabelComponent data={nutritionData} />}
-                </div>
-
-                <div className="mt-8 w-full max-w-2xl">
-                  <h2 className="text-2xl font-bold mb-4">{labelInfo[format].title}</h2>
-                  <p className="mb-4">{labelInfo[format].description}</p>
-                  <h3 className="text-xl font-semibold mb-2">Key Features:</h3>
-                  <ul className="list-disc pl-5 mb-4">
-                    {labelInfo[format].keyFeatures.map((feature, index) => (
-                      <li key={index}>{feature}</li>
-                    ))}
-                  </ul>
-                  <p className="italic">{labelInfo[format].regulatoryBody}</p>
-                </div>
-              </div>
-
-            ) : (
-              <div className="text-center text-gray-500">
-                Fill out the nutrition form to generate a label preview
-              </div>
-            )}
           </div>
         </div>
       </div>

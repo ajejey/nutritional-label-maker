@@ -45,4 +45,15 @@ export const labelInfo = {
     ],
     regulatoryBody: "Regulated by Health Canada and the Canadian Food Inspection Agency (CFIA)",
   },
+  AUSTRALIA: {
+    title: "Australian Nutrition Information Panel (NIP)",
+    description: "The Australian Nutrition Information Panel (NIP) is mandatory for most packaged foods in Australia and New Zealand. It follows the Food Standards Code requirements set by Food Standards Australia New Zealand (FSANZ).",
+    keyFeatures: [
+      "Mandatory display of serving size and servings per package",
+      "Nutrient information displayed per serving and per 100g",
+      "Core nutrients including energy (kJ), protein, total fat, saturated fat, carbohydrates, sugars, and sodium",
+      "Based on average adult daily energy intake of 8700kJ",
+    ],
+    regulatoryBody: "Regulated by Food Standards Australia New Zealand (FSANZ)",
+  },
 };

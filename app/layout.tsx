@@ -1,8 +1,12 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { NavBar } from "./components/navigation/nav-bar";
+import { Footer } from "./components/footer";
+import GoogleAnalytics from "./components/google-analytics";
+import { AnalyticsProvider } from "./providers/analytics-provider";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'Nutrition Label Generator | Create Custom Nutrition Facts Labels',
@@ -17,7 +21,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
+        <AnalyticsProvider>
+          <div className="flex flex-col min-h-screen">
+            <NavBar />
+            <main className="flex-1 pt-16">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </AnalyticsProvider>
+      </body>
     </html>
   );
 }
