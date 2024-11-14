@@ -9,12 +9,73 @@ import { AnalyticsProvider } from "./providers/analytics-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Nutrition Label Generator | Create Custom Nutrition Facts Labels',
-  description: 'Generate custom nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
-  keywords: 'nutrition label, nutrition facts, food labeling, US nutrition label, EU nutrition label, Indian nutrition label, Canadian nutrition label',
+  metadataBase: new URL('https://nutritionlabelmaker.com'),
+  title: {
+    default: 'Nutrition Label Generator | Create Custom Nutrition Facts Labels',
+    template: '%s | Nutrition Label Generator'
+  },
+  description: 'Generate FDA-compliant nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
+  keywords: [
+    'nutrition label generator',
+    'nutrition facts label',
+    'food labeling',
+    'FDA nutrition label',
+    'EU nutrition label',
+    'nutrition declaration',
+    'food packaging labels',
+    'nutrition facts panel',
+    'food manufacturer tools',
+    'free nutrition label maker'
+  ],
+  authors: [{ name: 'Nutrition Label Maker' }],
+  creator: 'Nutrition Label Maker',
+  publisher: 'Nutrition Label Maker',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   verification: {
     google: '7nItEeuNSAIFL_unU4Ai5p-SGizDDaJU8XRYEKdtOgk',
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://nutritionlabelmaker.com',
+    siteName: 'Nutrition Label Generator',
+    title: 'Create Professional Nutrition Facts Labels Online',
+    description: 'Generate FDA-compliant nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Nutrition Label Generator Preview',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Create Professional Nutrition Facts Labels Online',
+    description: 'Generate FDA-compliant nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
+    images: ['/twitter-image.jpg'],
+    creator: '@nutritionlabelmaker',
+  },
+  alternates: {
+    canonical: 'https://nutritionlabelmaker.com',
+  },
+  manifest: '/site.webmanifest',
 }
 
 export default function RootLayout({
@@ -24,6 +85,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2563eb" />
+        <meta name="msapplication-TileColor" content="#2563eb" />
+        <meta name="theme-color" content="#ffffff" />
+      </head>
       <body className={inter.className}>
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />

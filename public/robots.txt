@@ -1,0 +1,11 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://nutritionlabelmaker.com/sitemap.xml
+
+# Disallow admin and private routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
