@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: 'Nutrition Label Generator | Create Custom Nutrition Facts Labels',
   description: 'Generate custom nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
   keywords: 'nutrition label, nutrition facts, food labeling, US nutrition label, EU nutrition label, Indian nutrition label, Canadian nutrition label',
+  verification: {
+    google: '7nItEeuNSAIFL_unU4Ai5p-SGizDDaJU8XRYEKdtOgk',
+  },
 }
 
 export default function RootLayout({
