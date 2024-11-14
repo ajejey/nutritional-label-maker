@@ -39,7 +39,12 @@ interface NutritionFormProps {
   onSubmit: (data: NutritionData) => void;
 }
 
-const formFields = {
+type FormField = {
+  name: keyof NutritionData;
+  label: string;
+};
+
+const formFields: Record<string, FormField[]> = {
   serving: [
     { name: "servingSize", label: "Serving Size" },
     { name: "servingsPerContainer", label: "Servings Per Container" },
@@ -89,7 +94,7 @@ export function NutritionForm({ onSubmit }: NutritionFormProps) {
     },
   });
 
-  const renderField = (field: { name: keyof NutritionData; label: string }) => (
+  const renderField = (field: FormField) => (
     <FormField
       key={field.name}
       control={form.control}
@@ -125,28 +130,28 @@ export function NutritionForm({ onSubmit }: NutritionFormProps) {
         <Card className="p-4 border-none">
           <h3 className="font-semibold mb-3">Serving Information</h3>
           <div className="grid grid-cols-2 gap-4">
-            {formFields.serving.map(renderField)}
+            {formFields.serving.map((field) => renderField(field))}
           </div>
         </Card>
 
         <Card className="p-4 border-none">
           <h3 className="font-semibold mb-3">Main Nutrients</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {formFields.mainNutrients.map(renderField)}
+            {formFields.mainNutrients.map((field) => renderField(field))}
           </div>
         </Card>
 
         <Card className="p-4 border-none">
           <h3 className="font-semibold mb-3">Carbohydrates & Protein</h3>
           <div className="grid grid-cols-2 gap-4">
-            {formFields.carbs.map(renderField)}
+            {formFields.carbs.map((field) => renderField(field))}
           </div>
         </Card>
 
         <Card className="p-4 border-none">
           <h3 className="font-semibold mb-3">Vitamins & Minerals</h3>
           <div className="grid grid-cols-2 gap-4">
-            {formFields.vitamins.map(renderField)}
+            {formFields.vitamins.map((field) => renderField(field))}
           </div>
         </Card>
 
