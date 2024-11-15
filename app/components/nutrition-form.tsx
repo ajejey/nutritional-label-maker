@@ -17,8 +17,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 const nutritionSchema = z.object({
-  servingSize: z.string().min(1, "Required"),
-  servingsPerContainer: z.string().min(1, "Required"),
+  servingSize: z.number().min(1, "Required"),
+  servingsPerContainer: z.number().min(1, "Required"),
   calories: z.number().min(0),
   totalFat: z.number().min(0),
   saturatedFat: z.number().min(0),
@@ -75,8 +75,8 @@ export function NutritionForm({ onSubmit }: NutritionFormProps) {
   const form = useForm<NutritionData>({
     resolver: zodResolver(nutritionSchema),
     defaultValues: {
-      servingSize: "1 cup",
-      servingsPerContainer: "8",
+      servingSize: 1,
+      servingsPerContainer: 8,
       calories: 150,
       totalFat: 8,
       saturatedFat: 1,

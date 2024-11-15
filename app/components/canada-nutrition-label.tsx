@@ -16,7 +16,7 @@ export function CanadaNutritionLabel({ data }: { data: NutritionData }) {
       </div>
       <div className="text-sm mb-2">
         Per {data.servingSize} / pour {data.servingSize}<br />
-        Serving Size / portion {data.servingSize} ({data.servingsPerContainer} {data.servingsPerContainer === "1" ? "serving" : "servings"} per container / {data.servingsPerContainer} {data.servingsPerContainer === "1" ? "portion" : "portions"} par contenant)
+        Serving Size / portion {data.servingSize} ({data.servingsPerContainer} {Number(data.servingsPerContainer) === 1 ? "serving" : "servings"} per container / {data.servingsPerContainer} {Number(data.servingsPerContainer) === 1 ? "portion" : "portions"} par contenant)
       </div>
 
       <table className="w-full border-collapse">
