@@ -23,7 +23,7 @@ export function CanadaNutritionLabel({ data }: { data: NutritionData }) {
         <thead>
           <tr className="border-t-[8px] border-b border-black">
             <th className="text-left py-1 font-normal">
-              <span className="font-bold">Calories</span> / Calories {data.calories}
+              <span className="font-bold">Calories</span> / Calories {Math.round(data.calories)}
             </th>
             <th className="text-right py-1 font-normal">% Daily Value*<br />% valeur quotidienne*</th>
           </tr>
@@ -42,7 +42,7 @@ export function CanadaNutritionLabel({ data }: { data: NutritionData }) {
           ].map((item, index) => (
             <tr key={index} className={`border-t border-black ${item.indent ? "text-sm" : "font-bold"}`}>
               <td className={`py-1 ${item.indent ? "pl-4" : ""}`}>
-                {item.en} {item.value}{item.unit}
+                {item.en} {item.value.toFixed(1)}{item.unit}
               </td>
               {item.dv && (
                 <td className="text-right py-1">

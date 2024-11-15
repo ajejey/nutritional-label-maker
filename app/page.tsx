@@ -1,212 +1,142 @@
-import { Globe2, ShieldCheck, Zap, CheckCircle2, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import Link from 'next/link';
+import { ArrowRight, ChefHat, FileText, Globe, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main>
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-white to-blue-50">
-        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Create Professional Nutrition Labels
-              <span className="block text-primary">in Seconds</span>
+      <section className="relative bg-gradient-to-b from-white to-gray-50 pt-24 pb-12">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+              Create Professional{' '}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+                Nutrition Labels
+              </span>{' '}
+              for Your Food Products
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-              Generate FDA-compliant nutrition facts labels and international nutrition declarations instantly. 
-              Perfect for food manufacturers, restaurants, and health professionals.
+            <p className="text-xl text-gray-600 mb-12">
+              Generate accurate, compliant nutrition labels for your recipes or products.
+              Choose from multiple international formats and download in high resolution.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Link href="/generator">
-                <Button size="lg" className="text-lg px-8 bg-primary hover:bg-primary/90">
-                  Get Started
-                </Button>
-              </Link>
+
+            {/* CTA Cards */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                <div>                  
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white shadow-lg">
+                  <ChefHat className="w-6 h-6" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Ingredient Nutrition Builder</h2>
+                <p className="text-gray-600 mb-6">
+                  Calculate nutrition facts from your ingredients using our USDA database.
+                  Perfect for manufacturers and food businesses.
+                </p>
+                </div>
+                <Link href="/ingredient-builder">
+                  <Button className="w-full group-hover:bg-blue-600 transition-colors">
+                    Build from Ingredients
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                <div>
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl text-white shadow-lg">
+                  <FileText className="w-6 h-6" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Direct Nutrition Generator</h2>
+                <p className="text-gray-600 mb-6">
+                  Already have nutrition information? Generate labels directly by entering
+                  your nutrition facts data.
+                </p>
+                </div>
+                <Link href="/generator">
+                  <Button className="w-full bg-indigo-500 text-gray-50 group-hover:bg-indigo-600 transition-colors">
+                    Create from Values
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Features Section */}
-      <div className="py-24 bg-secondary" id="features">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Everything you need for compliant nutrition labels
-            </h2>
-          </div>
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-3">
-              <div className="flex flex-col items-start">
-                <div className="rounded-lg bg-primary p-2 ring-1 ring-primary/10">
-                  <Globe2 className="h-6 w-6 text-white" />
+      <section className="py-8 bg-white">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <Globe className="w-6 h-6 text-blue-500" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-gray-900">
-                  International Formats
-                </h3>
-                <p className="mt-2 text-base text-gray-600">
-                  Support for US, EU, Canadian, Indian, and Australian nutrition label formats. Switch between formats with a single click.
-                </p>
+                <h3 className="text-xl font-semibold">Multiple Formats</h3>
               </div>
-              <div className="flex flex-col items-start">
-                <div className="rounded-lg bg-primary p-2 ring-1 ring-primary/10">
-                  <Zap className="h-6 w-6 text-white" />
+              <p className="text-gray-600">
+                Generate labels in US FDA, EU, Canadian, Australian, and Indian formats.
+                All compliant with local regulations.
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <ChefHat className="w-6 h-6 text-blue-500" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-gray-900">
-                  Instant Generation
-                </h3>
-                <p className="mt-2 text-base text-gray-600">
-                  Create professional nutrition labels in seconds with our easy-to-use form and real-time preview.
-                </p>
+                <h3 className="text-xl font-semibold">USDA Database</h3>
               </div>
-              <div className="flex flex-col items-start">
-                <div className="rounded-lg bg-primary p-2 ring-1 ring-primary/10">
-                  <ShieldCheck className="h-6 w-6 text-white" />
+              <p className="text-gray-600">
+                Access comprehensive nutrition data from the USDA database for accurate
+                ingredient-based calculations.
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <Sparkles className="w-6 h-6 text-blue-500" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-gray-900">
-                  Compliance Ready
-                </h3>
-                <p className="mt-2 text-base text-gray-600">
-                  All labels are designed to meet current regulatory requirements for their respective regions.
-                </p>
+                <h3 className="text-xl font-semibold">Professional Quality</h3>
               </div>
+              <p className="text-gray-600">
+                Download high-resolution labels perfect for packaging, menus, or documentation.
+                Print-ready quality guaranteed.
+              </p>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* How It Works Section */}
-      <div className="py-24 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-16">
-              Create Your Nutrition Label in 3 Simple Steps
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {[
-              {
-                step: "1",
-                title: "Enter Your Data",
-                description: "Input your product's nutritional information using our simple form.",
-              },
-              {
-                step: "2",
-                title: "Choose Format",
-                description: "Select from US, EU, Canadian, Indian, or Australian label formats.",
-              },
-              {
-                step: "3",
-                title: "Download & Use",
-                description: "Get your high-resolution nutrition label ready for packaging.",
-              },
-            ].map((item) => (
-              <div key={item.step} className="relative pl-16">
-                <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white font-bold">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900">{item.title}</h3>
-                <p className="mt-2 text-gray-600">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Benefits Section */}
-      <div className="py-24 bg-secondary">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Choose Our Nutrition Label Generator?
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              "Compliant with FDA, EU, and international standards",
-              "High-resolution output suitable for packaging",
-              "Real-time preview of your nutrition label",
-              "Multiple format support for global markets",
-              "Easy-to-use interface with guided inputs",
-              "Instant downloads in various formats",
-              "Regular updates to match regulation changes",
-              "Accurate calculations and formatting",
-              "Time and cost-effective solution",
-            ].map((benefit, index) => (
-              <div key={index} className="flex items-start space-x-3">
-                <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0" />
-                <span className="text-gray-600">{benefit}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="py-24 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Frequently Asked Questions
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-5xl mx-auto">
-            {[
-              {
-                q: "Is this nutrition label generator free to use?",
-                a: "Yes, our nutrition label generator is completely free to use. Create and download as many labels as you need.",
-              },
-              {
-                q: "Are the labels FDA compliant?",
-                a: "Yes, our US nutrition labels follow all FDA guidelines and requirements for nutrition facts panels.",
-              },
-              {
-                q: "Can I use these labels for my food products?",
-                a: "Yes, you can use these labels for your food products. However, we recommend verifying the information with your local food safety authority.",
-              },
-              {
-                q: "What file format do I receive?",
-                a: "You receive a high-resolution PNG file that's suitable for both digital use and print packaging.",
-              },
-              {
-                q: "Do you support international formats?",
-                a: "Yes, we support US, EU, Canadian, Indian, and Australian nutrition label formats, with more coming soon.",
-              },
-              {
-                q: "How accurate are the calculations?",
-                a: "Our calculator follows standard rounding rules and formatting guidelines for each region's requirements.",
-              },
-            ].map((faq, index) => (
-              <div key={index} className="space-y-3">
-                <h3 className="text-lg font-semibold text-gray-900">{faq.q}</h3>
-                <p className="text-gray-600">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* CTA Section */}
-      <div className="bg-primary py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Ready to create your nutrition label?
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-primary-foreground/90">
-              Join thousands of food manufacturers and professionals who trust our nutrition label generator.
-            </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Link href="/generator">
-                <Button size="lg" variant="secondary" className="text-lg px-8">
-                  Get Started <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
+      <section className="py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="container mx-auto px-4 max-w-6xl text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            Ready to Create Your Nutrition Label?
+          </h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Choose the method that works best for you and start generating professional
+            nutrition labels today.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/recipe-calculator">
+              <Button size="lg" className="min-w-[200px]">
+                Build from Ingredients
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+            <Link href="/generator">
+              <Button size="lg" variant="outline" className="min-w-[200px]">
+                Direct Generator
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 }

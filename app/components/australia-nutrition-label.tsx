@@ -6,7 +6,7 @@ interface AustraliaNutritionLabelProps {
 }
 
 export const AustraliaNutritionLabel: React.FC<AustraliaNutritionLabelProps> = ({ data }) => {
-  const servingSize = parseFloat(data.servingSize) || 0;
+  const servingSize = parseFloat(data.servingSize) || 100;
 
   const calculatePer100g = (value: number) => {
     return ((value * 100) / servingSize).toFixed(1);
@@ -31,42 +31,42 @@ export const AustraliaNutritionLabel: React.FC<AustraliaNutritionLabelProps> = (
         <tbody>
           <tr className="border-b border-black">
             <td className="py-1">Energy</td>
-            <td className="text-right">{data.calories}kJ</td>
+            <td className="text-right">{data.calories.toFixed(1)}kJ</td>
             <td className="text-right">{calculatePer100g(data.calories)}kJ</td>
           </tr>
           <tr className="border-b border-black">
             <td className="py-1">Protein</td>
-            <td className="text-right">{data.protein}g</td>
+            <td className="text-right">{data.protein.toFixed(1)}g</td>
             <td className="text-right">{calculatePer100g(data.protein)}g</td>
           </tr>
           <tr className="border-b border-black">
             <td className="py-1">Fat, total</td>
-            <td className="text-right">{data.totalFat}g</td>
+            <td className="text-right">{data.totalFat.toFixed(1)}g</td>
             <td className="text-right">{calculatePer100g(data.totalFat)}g</td>
           </tr>
           <tr className="border-b border-black pl-4">
             <td className="py-1 pl-4">- saturated</td>
-            <td className="text-right">{data.saturatedFat}g</td>
+            <td className="text-right">{data.saturatedFat.toFixed(1)}g</td>
             <td className="text-right">{calculatePer100g(data.saturatedFat)}g</td>
           </tr>
           <tr className="border-b border-black">
             <td className="py-1">Carbohydrate</td>
-            <td className="text-right">{data.totalCarbohydrates}g</td>
+            <td className="text-right">{data.totalCarbohydrates.toFixed(1)}g</td>
             <td className="text-right">{calculatePer100g(data.totalCarbohydrates)}g</td>
           </tr>
           <tr className="border-b border-black pl-4">
             <td className="py-1 pl-4">- sugars</td>
-            <td className="text-right">{data.sugars}g</td>
+            <td className="text-right">{data.sugars.toFixed(1)}g</td>
             <td className="text-right">{calculatePer100g(data.sugars)}g</td>
           </tr>
           <tr className="border-b border-black">
             <td className="py-1">Dietary fibre</td>
-            <td className="text-right">{data.dietaryFiber}g</td>
+            <td className="text-right">{data.dietaryFiber.toFixed(1)}g</td>
             <td className="text-right">{calculatePer100g(data.dietaryFiber)}g</td>
           </tr>
           <tr className="border-b border-black">
             <td className="py-1">Sodium</td>
-            <td className="text-right">{data.sodium}mg</td>
+            <td className="text-right">{data.sodium.toFixed(1)}mg</td>
             <td className="text-right">{calculatePer100g(data.sodium)}mg</td>
           </tr>
         </tbody>

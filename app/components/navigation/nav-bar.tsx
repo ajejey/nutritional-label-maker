@@ -21,6 +21,10 @@ const routes = [
     label: "Label Generator",
     href: "/generator",
   },
+  {
+    label: "Ingredient Builder",
+    href: "/ingredient-builder",
+  },
 ];
 
 export function NavBar() {
@@ -51,11 +55,11 @@ export function NavBar() {
                 {route.label}
               </Link>
             ))}
-            <Button asChild>
+            {/* <Button asChild>
               <Link href="/generator">
                 Create Label
               </Link>
-            </Button>
+            </Button> */}
           </nav>
 
           {/* Mobile Navigation */}

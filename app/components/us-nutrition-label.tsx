@@ -26,7 +26,7 @@ export function USNutritionLabel({ data }: { data: NutritionData }) {
       <div className="text-base">Amount per serving</div>
       <div className="flex justify-between text-4xl font-black border-b-4 border-black mb-2">
         <div>Calories</div>
-        <div>{data.calories}</div>
+        <div>{Math.round(data.calories)}</div>
       </div>
 
       <div className="text-right text-base border-b border-black mb-2">% Daily Value*</div>
@@ -49,7 +49,7 @@ export function USNutritionLabel({ data }: { data: NutritionData }) {
           }`}
         >
           <div>
-            {item.label} {item.value}{item.unit}
+            {item.label} {item.value.toFixed(1)}{item.unit}
           </div>
           {item.dv && <div>{Math.round((item.value / item.dv) * 100)}%</div>}
         </div>

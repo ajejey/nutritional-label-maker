@@ -21,39 +21,39 @@ export function IndianNutritionalLabel({ data }: { data: NutritionData }) {
         <tbody>
           <tr className="border-b border-gray-300">
             <td>Energy</td>
-            <td className="text-right">{data.calories} kcal</td>
+            <td className="text-right">{Math.round(data.calories)} kcal</td>
           </tr>
           <tr className="border-b border-gray-300">
             <td>Protein</td>
-            <td className="text-right">{data.protein} g</td>
+            <td className="text-right">{data.protein.toFixed(1)} g</td>
           </tr>
           <tr className="border-b border-gray-300">
             <td>Carbohydrate</td>
-            <td className="text-right">{data.totalCarbohydrates} g</td>
+            <td className="text-right">{data.totalCarbohydrates.toFixed(1)} g</td>
           </tr>
           <tr className="border-b border-gray-300">
             <td>Total Sugars</td>
-            <td className="text-right">{data.sugars} g</td>
+            <td className="text-right">{data.sugars.toFixed(1)} g</td>
           </tr>
           <tr className="border-b border-gray-300">
             <td>Total Fat</td>
-            <td className="text-right">{data.totalFat} g</td>
+            <td className="text-right">{data.totalFat.toFixed(1)} g</td>
           </tr>
           <tr className="border-b border-gray-300">
             <td>Saturated Fat</td>
-            <td className="text-right">{data.saturatedFat} g</td>
+            <td className="text-right">{data.saturatedFat.toFixed(1)} g</td>
           </tr>
           <tr className="border-b border-gray-300">
             <td>Trans Fat</td>
-            <td className="text-right">{data.transFat} g</td>
+            <td className="text-right">{data.transFat.toFixed(1)} g</td>
           </tr>
           <tr className="border-b border-gray-300">
             <td>Cholesterol</td>
-            <td className="text-right">{data.cholesterol} mg</td>
+            <td className="text-right">{data.cholesterol.toFixed(1)} mg</td>
           </tr>
           <tr>
             <td>Sodium</td>
-            <td className="text-right">{data.sodium} mg</td>
+            <td className="text-right">{data.sodium.toFixed(1)} mg</td>
           </tr>
         </tbody>
       </table>
