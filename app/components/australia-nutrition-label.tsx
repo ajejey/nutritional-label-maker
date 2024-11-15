@@ -6,7 +6,7 @@ interface AustraliaNutritionLabelProps {
 }
 
 export const AustraliaNutritionLabel: React.FC<AustraliaNutritionLabelProps> = ({ data }) => {
-  const servingSize = parseFloat(data.servingSize) || 100;
+  const servingSize: number = Number(data.servingSize) || 100;
 
   const calculatePer100g = (value: number) => {
     return ((value * 100) / servingSize).toFixed(1);
