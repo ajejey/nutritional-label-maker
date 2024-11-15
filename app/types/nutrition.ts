@@ -1,6 +1,6 @@
 export type NutritionData = {
-  servingSize: string;
-  servingsPerContainer: string;
+  servingSize: number;
+  servingsPerContainer: number;
   calories: number;
   totalFat: number;
   saturatedFat: number;

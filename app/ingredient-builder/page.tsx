@@ -1,27 +1,22 @@
-'use client';
-
+'use client'
 import { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Recipe, RecipeIngredient } from '../types/recipe';
-import { calculateIngredientNutrition } from '../lib/usda-api';
-import LabelPreview from '../components/nutrition-label/label-preview';
-import { Badge } from '@/components/ui/badge';
-import { AlertCircle, ArrowRight, FileText, Trash2 } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Trash2, ArrowRight } from 'lucide-react';
 import { USDAIngredientSearch } from '../components/ingredient-search/usda-ingredient-search';
+import LabelPreview from '../components/nutrition-label/label-preview';
+import { calculateIngredientNutrition } from '../lib/usda-api';
+import { RecipeIngredient } from '../types/recipe';
+import { NutritionData } from '../types/nutrition';
 
-export default function RecipeCalculator() {
-  const [activeStep, setActiveStep] = useState<number>(1);
-  const [showPreview, setShowPreview] = useState(false);
-  const [recipe, setRecipe] = useState<Recipe>({
+export default function IngredientBuilder() {
+  const [recipe, setRecipe] = useState({
     name: '',
-    servingSize: 1,
-    servingUnit: 'serving',
+    servingSize: 0,
     servingsPerContainer: 1,
-    ingredients: [],
+    ingredients: [] as RecipeIngredient[],
     totalNutrition: {
       calories: 0,
       totalFat: 0,
@@ -37,53 +32,49 @@ export default function RecipeCalculator() {
       calcium: 0,
       iron: 0,
       potassium: 0,
-    },
+      servingSize: 0,
+      servingsPerContainer: 1
+    } as NutritionData,
   });
 
-  const progress = Math.min(100, ((activeStep) / 2) * 100);
+  const [activeStep, setActiveStep] = useState(1);
+  const [showPreview, setShowPreview] = useState(true);
 
   const steps = [
     {
       number: 1,
-      title: "Add Recipe & Ingredients",
-      description: "Enter recipe details and add ingredients",
-      isComplete: recipe.name && recipe.servingSize > 0 && recipe.servingsPerContainer > 0 && recipe.ingredients.length > 0
+      title: 'Add Recipe & Ingredients',
+      description: 'Enter recipe details and add ingredients',
+      isComplete: recipe.name !== '' && recipe.servingSize > 0 && recipe.ingredients.length > 0,
     },
     {
       number: 2,
-      title: "Review & Generate",
-      description: "Review nutrition information and generate your label",
-      isComplete: recipe.ingredients.length > 0
-    }
+      title: 'Review & Generate',
+      description: 'Review nutrition facts and generate label',
+      isComplete: false,
+    },
   ];
 
-  const handleAddIngredient = (newIngredient: RecipeIngredient) => {
-    setRecipe(prev => {
-      const updatedIngredients = [...prev.ingredients, newIngredient];
-      const totalNutrition = calculateTotalNutrition(updatedIngredients);
+  const handleAddIngredient = (ingredient: RecipeIngredient) => {
+    setRecipe((prev) => ({
+      ...prev,
+      ingredients: [...prev.ingredients, ingredient],
+      totalNutrition: calculateTotalNutrition([...prev.ingredients, ingredient]),
+    }));
+  };
 
+  const handleRemoveIngredient = (index: number) => {
+    setRecipe((prev) => {
+      const newIngredients = prev.ingredients.filter((_, i) => i !== index);
       return {
         ...prev,
-        ingredients: updatedIngredients,
-        totalNutrition,
+        ingredients: newIngredients,
+        totalNutrition: calculateTotalNutrition(newIngredients),
       };
     });
   };
 
-  const removeIngredient = (index: number) => {
-    setRecipe(prev => {
-      const updatedIngredients = prev.ingredients.filter((_, i) => i !== index);
-      const totalNutrition = calculateTotalNutrition(updatedIngredients);
-
-      return {
-        ...prev,
-        ingredients: updatedIngredients,
-        totalNutrition,
-      };
-    });
-  };
-
-  const calculateTotalNutrition = (ingredients: RecipeIngredient[]) => {
+  const calculateTotalNutrition = (ingredients: RecipeIngredient[]): NutritionData => {
     return ingredients.reduce((total, ingredient) => {
       const nutrition = calculateIngredientNutrition(
         ingredient.nutritionPer100g,
@@ -106,8 +97,27 @@ export default function RecipeCalculator() {
         calcium: (total.calcium || 0) + (nutrition.calcium || 0),
         iron: (total.iron || 0) + (nutrition.iron || 0),
         potassium: (total.potassium || 0) + (nutrition.potassium || 0),
+        servingSize: recipe.servingSize,
+        servingsPerContainer: recipe.servingsPerContainer
       };
-    }, { ...recipe.totalNutrition });
+    }, {
+      calories: 0,
+      totalFat: 0,
+      saturatedFat: 0,
+      transFat: 0,
+      cholesterol: 0,
+      sodium: 0,
+      totalCarbohydrates: 0,
+      dietaryFiber: 0,
+      sugars: 0,
+      protein: 0,
+      vitaminD: 0,
+      calcium: 0,
+      iron: 0,
+      potassium: 0,
+      servingSize: recipe.servingSize,
+      servingsPerContainer: recipe.servingsPerContainer
+    });
   };
 
   return (
@@ -117,209 +127,224 @@ export default function RecipeCalculator() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold">Ingredient Nutrition Builder</h1>
-            <p className="text-gray-500 mt-2">Create nutrition labels for your recipes in 2 easy steps</p>
+            <p className="text-gray-600">Create nutrition labels from your ingredients</p>
           </div>
-          <Badge variant="secondary" className="text-base px-4 py-2">
-            {recipe.ingredients.length} Ingredients
-          </Badge>
         </div>
-        <Progress value={progress} className="h-2" />
-      </div>
 
-      {/* Steps Navigation */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        {steps.map((step) => (
-          <button
-            key={step.number}
-            onClick={() => setActiveStep(step.number)}
-            className={`p-4 rounded-lg border-2 transition-all ${activeStep === step.number
-              ? 'border-blue-500 bg-blue-50'
-              : step.isComplete
-                ? 'border-green-200 bg-green-50'
-                : 'border-gray-200'
+        {/* Progress Steps */}
+        <div className="grid grid-cols-2 gap-4 mb-8">
+          {steps.map((step) => (
+            <button
+              key={step.number}
+              onClick={() => setActiveStep(step.number)}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                activeStep === step.number
+                  ? 'border-blue-500 bg-blue-50'
+                  : step.isComplete
+                  ? 'border-green-200 bg-green-50'
+                  : 'border-gray-200'
               }`}
-          >
-            <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activeStep === step.number
-                ? 'bg-blue-500 text-white'
-                : step.isComplete
-                  ? 'bg-green-500 text-white'
-                  : 'bg-gray-200'
-                }`}>
-                {step.number}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    activeStep === step.number
+                      ? 'bg-blue-500 text-white'
+                      : step.isComplete
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-200'
+                  }`}
+                >
+                  {step.number}
+                </div>
+                <div className="text-left">
+                  <div className="font-medium">{step.title}</div>
+                  <div className="text-sm text-gray-500">{step.description}</div>
+                </div>
               </div>
-              <div className="text-left">
-                <div className="font-medium">{step.title}</div>
-                <div className="text-sm text-gray-500">{step.description}</div>
-              </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="space-y-6">
-        {activeStep === 1 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <Card className="p-6">
-                <div className="space-y-6">
+      {/* Step Content */}
+      {activeStep === 1 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            <Card className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="name">Product Name</Label>
+                  <Input
+                    id="name"
+                    value={recipe.name}
+                    onChange={(e) =>
+                      setRecipe((prev) => ({ ...prev, name: e.target.value }))
+                    }
+                    placeholder="Enter product name"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Recipe Name</label>
+                    <Label htmlFor="servingSize">Serving Size (g)</Label>
                     <Input
-                      value={recipe.name}
-                      onChange={(e) => setRecipe(prev => ({ ...prev, name: e.target.value }))}
-                      placeholder="Enter recipe name"
-                      className="text-lg"
+                      id="servingSize"
+                      type="number"
+                      value={recipe.servingSize || ''}
+                      onChange={(e) =>
+                        setRecipe((prev) => ({
+                          ...prev,
+                          servingSize: parseFloat(e.target.value) || 0,
+                          totalNutrition: {
+                            ...prev.totalNutrition,
+                            servingSize: parseFloat(e.target.value) || 0
+                          }
+                        }))
+                      }
+                      placeholder="Enter serving size"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Serving Size</label>
-                      <Input
-                        type="number"
-                        value={recipe.servingSize}
-                        onChange={(e) => setRecipe(prev => ({ ...prev, servingSize: Number(e.target.value) }))}
-                        min="1"
-                        className="text-lg"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Number of Servings</label>
-                      <Input
-                        type="number"
-                        value={recipe.servingsPerContainer}
-                        onChange={(e) => setRecipe(prev => ({ ...prev, servingsPerContainer: Number(e.target.value) }))}
-                        min="1"
-                        className="text-lg"
-                      />
-                    </div>
+                  <div>
+                    <Label htmlFor="servingsPerContainer">
+                      Servings Per Container
+                    </Label>
+                    <Input
+                      id="servingsPerContainer"
+                      type="number"
+                      value={recipe.servingsPerContainer || ''}
+                      onChange={(e) =>
+                        setRecipe((prev) => ({
+                          ...prev,
+                          servingsPerContainer: parseFloat(e.target.value) || 1,
+                          totalNutrition: {
+                            ...prev.totalNutrition,
+                            servingsPerContainer: parseFloat(e.target.value) || 1
+                          }
+                        }))
+                      }
+                      placeholder="Enter servings per container"
+                    />
                   </div>
                 </div>
+              </div>
 
               <div className="mt-6">
                 <USDAIngredientSearch onIngredientAdd={handleAddIngredient} />
               </div>
-              </Card>
-            </div>
-
-            <div className="space-y-6">
-              <Card className="p-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-medium">Current Ingredients</h3>
-
-                  </div>
-                  {recipe.ingredients.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500">
-                      Search and add ingredients to your recipe
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {recipe.ingredients.map((ingredient, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                        >
-                          <div>
-                            <div className="font-medium">{ingredient.name}</div>
-                            <div className="text-sm text-gray-500">
-                              {ingredient.quantity} {ingredient.unit}
-                            </div>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => removeIngredient(index)}
-                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      ))}
-
-                    </div>
-                  )}
-                </div>
-              </Card>
-              {recipe.ingredients.length > 0 && recipe.name && recipe.servingSize > 0 && recipe.servingsPerContainer > 0 && (
-                <Button
-                  variant="default"
-                  className='w-full'
-                  onClick={() => setActiveStep(2)}
-                >
-                  Review & Generate
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              )}
-            </div>
+            </Card>
           </div>
-        )}
 
-        {activeStep === 2 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-semibold">Recipe Summary</h2>
-                  
+          <div className="space-y-6">
+            <Card className="p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-medium">Current Ingredients</h3>
                 </div>
-                <div className="space-y-4">
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <div className="grid grid-cols-2 gap-y-2">
-                      <div className="text-gray-500">Recipe Name</div>
-                      <div className="font-medium">{recipe.name}</div>
-                      <div className="text-gray-500">Serving Size</div>
-                      <div className="font-medium">{recipe.servingSize}</div>
-                      <div className="text-gray-500">Number of Servings</div>
-                      <div className="font-medium">{recipe.servingsPerContainer}</div>
-                      <div className="text-gray-500">Total Ingredients</div>
-                      <div className="font-medium">{recipe.ingredients.length}</div>
-                    </div>
+                {recipe.ingredients.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    Search and add ingredients to your recipe
                   </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    {Object.entries(recipe.totalNutrition).map(([key, value]) => (
-                      <div key={key} className="p-3 bg-gray-50 rounded-lg">
-                        <div className="text-sm text-gray-500 capitalize">
-                          {key.replace(/([A-Z])/g, ' $1').trim()}
+                ) : (
+                  <div className="space-y-2">
+                    {recipe.ingredients.map((ingredient, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                      >
+                        <div>
+                          <div className="font-medium">{ingredient.name}</div>
+                          <div className="text-sm text-gray-500">
+                            {ingredient.quantity} {ingredient.unit}
+                          </div>
                         </div>
-                        <div className="font-medium">
-                          {typeof value === 'number' ?
-                            value.toFixed(1) + (key === 'calories' ? ' kcal' : 'g')
-                            : value}
-                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleRemoveIngredient(index)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     ))}
                   </div>
-                </div>
-              </Card>
+                )}
+              </div>
+            </Card>
 
-              <Alert>
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Review the nutrition information carefully. You can go back to make adjustments if needed.
-                </AlertDescription>
-              </Alert>
-            </div>
-
-            {/* Preview Panel */}
-            <div className="lg:sticky lg:top-8">
-              <Card className="p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <FileText className="w-5 h-5 text-blue-500" />
-                  <h2 className="text-xl font-semibold">Nutrition Label Preview</h2>
-                </div>
-                <LabelPreview
-                  nutritionData={recipe.totalNutrition}
-                  compact
-                  showInfo={false}
-                />
-              </Card>
-            </div>
+            {recipe.ingredients.length > 0 && recipe.name && recipe.servingSize > 0 && recipe.servingsPerContainer > 0 && (
+              <Button
+                variant="default"
+                className="w-full"
+                onClick={() => setActiveStep(2)}
+              >
+                Review & Generate
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {activeStep === 2 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            <Card className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Recipe Summary</h2>
+              </div>
+              <div className="space-y-4">
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <div className="grid grid-cols-2 gap-y-2">
+                    <div className="text-gray-500">Product Name</div>
+                    <div className="font-medium">{recipe.name}</div>
+                    <div className="text-gray-500">Serving Size</div>
+                    <div className="font-medium">{recipe.servingSize}g</div>
+                    <div className="text-gray-500">Servings Per Container</div>
+                    <div className="font-medium">{recipe.servingsPerContainer}</div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {Object.entries(recipe.totalNutrition).map(([key, value]) => (
+                    <div key={key} className="p-3 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-500 capitalize">
+                        {key.replace(/([A-Z])/g, ' $1').trim()}
+                      </div>
+                      <div className="font-medium">
+                        {typeof value === 'number'
+                          ? `${value.toFixed(1)}${key === 'calories' ? ' kcal' : 'g'}`
+                          : String(value)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => setActiveStep(1)}
+            >
+              Back to Ingredients
+            </Button>
+          </div>
+
+          <div className="space-y-6">
+            <Card className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <h2 className="text-xl font-semibold">Nutrition Label Preview</h2>
+              </div>
+              <LabelPreview
+                nutritionData={recipe.totalNutrition}
+                compact
+                showInfo={false}
+              />
+            </Card>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
