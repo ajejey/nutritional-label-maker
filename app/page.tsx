@@ -122,7 +122,7 @@ export default function Home() {
             nutrition labels today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/recipe-calculator">
+            <Link href="/ingredient-builder">
               <Button size="lg" className="min-w-[200px]">
                 Build from Ingredients
                 <ArrowRight className="w-4 h-4 ml-2" />
