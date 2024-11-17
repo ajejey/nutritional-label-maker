@@ -4,6 +4,7 @@ import { FileText, Globe, Download, Sparkles } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Nutrition Label Generator | Create Food Labels Instantly',
   description: 'Generate professional nutrition labels instantly for your food products. Multiple international formats available. Create FDA-compliant labels with our easy-to-use tool.',
+
   keywords: [
     'nutrition label generator',
     'food label maker',
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     'nutrition label template',
     'food packaging design',
     'label maker online',
-  ],
+  ]
 };
 
 function GeneratorInfo() {

@@ -1,0 +1,53 @@
+.editor {
+    min-height: 500px;
+}
+
+.editor :global(.ck-editor__editable) {
+    min-height: 500px;
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+.editor :global(.ck-editor__editable_inline) {
+    padding: 0 2rem;
+}
+
+.editor :global(.ck-toolbar) {
+    border: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Improve heading styles */
+.editor :global(.ck-content h1) {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+.editor :global(.ck-content h2) {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+}
+
+.editor :global(.ck-content h3) {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Improve list styles */
+.editor :global(.ck-content ul),
+.editor :global(.ck-content ol) {
+    padding-left: 2em;
+    margin: 1em 0;
+}
+
+.editor :global(.ck-content ul) {
+    list-style-type: disc;
+}
+
+.editor :global(.ck-content ol) {
+    list-style-type: decimal;
+}
+
+.editor :global(.ck-content li) {
+    margin: 0.5em 0;
+}

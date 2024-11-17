@@ -25,6 +25,10 @@ const routes = [
     label: "Ingredient Builder",
     href: "/ingredient-builder",
   },
+  {
+    label: "Blog",
+    href: "/blog",
+  },
 ];
 
 export function NavBar() {
@@ -87,11 +91,11 @@ export function NavBar() {
                     {route.label}
                   </Link>
                 ))}
-                <Button asChild className="mt-2">
+                {/* <Button asChild className="mt-2">
                   <Link href="/generator" onClick={() => setIsOpen(false)}>
                     Create Label
                   </Link>
-                </Button>
+                </Button> */}
               </nav>
             </SheetContent>
           </Sheet>

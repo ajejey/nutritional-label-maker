@@ -5,16 +5,20 @@ import { NavBar } from "./components/navigation/nav-bar";
 import { Footer } from "./components/footer";
 import GoogleAnalytics from "./components/google-analytics";
 import { AnalyticsProvider } from "./providers/analytics-provider";
+// import { AuthProvider } from "./context/auth-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://nutrition-label-maker.vercel.app/'),
+
   title: {
-    default: 'Nutrition Label Generator | Create Custom Nutrition Facts Labels',
+    default: 'FREE NUTRITION FACTS MAKER | Create FDA-compliant Labels',
     template: '%s | Nutrition Label Generator'
   },
+
   description: 'Generate FDA-compliant nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
+
   keywords: [
     'nutrition label generator',
     'nutrition facts label',
@@ -27,17 +31,21 @@ export const metadata: Metadata = {
     'food manufacturer tools',
     'free nutrition label maker'
   ],
+
   authors: [{ name: 'Nutrition Label Maker' }],
   creator: 'Nutrition Label Maker',
   publisher: 'Nutrition Label Maker',
+
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
+
   verification: {
     google: '7nItEeuNSAIFL_unU4Ai5p-SGizDDaJU8XRYEKdtOgk',
   },
+
   robots: {
     index: true,
     follow: true,
@@ -49,6 +57,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -65,6 +74,7 @@ export const metadata: Metadata = {
       },
     ],
   },
+
   twitter: {
     card: 'summary_large_image',
     title: 'Create Professional Nutrition Facts Labels Online',
@@ -72,10 +82,12 @@ export const metadata: Metadata = {
     images: ['/twitter-image.jpg'],
     creator: '@nutritionlabelmaker',
   },
+
   alternates: {
     canonical: 'https://nutrition-label-maker.vercel.app/',
   },
-  manifest: '/site.webmanifest',
+
+  manifest: '/site.webmanifest'
 }
 
 export default function RootLayout({
@@ -98,15 +110,17 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
-        <AnalyticsProvider>
-          <div className="flex flex-col min-h-screen">
-            <NavBar />
-            <main className="flex-1 pt-16">
-              {children}
-            </main>
-            <Footer />
-          </div>
-        </AnalyticsProvider>
+        {/* <AuthProvider> */}
+          <AnalyticsProvider>
+            <div className="flex flex-col min-h-screen">
+              <NavBar />
+              <main className="flex-1 pt-16">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </AnalyticsProvider>
+        {/* </AuthProvider> */}
       </body>
     </html>
   );

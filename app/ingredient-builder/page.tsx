@@ -121,7 +121,7 @@ export default function IngredientBuilder() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    (<div className="container mx-auto px-4 py-8 max-w-6xl">
       {/* Header with Progress */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
@@ -166,7 +166,6 @@ export default function IngredientBuilder() {
           ))}
         </div>
       </div>
-
       {/* Step Content */}
       {activeStep === 1 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -285,7 +284,6 @@ export default function IngredientBuilder() {
           </div>
         </div>
       )}
-
       {activeStep === 2 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
@@ -345,6 +343,6 @@ export default function IngredientBuilder() {
           </div>
         </div>
       )}
-    </div>
+    </div>)
   );
 }

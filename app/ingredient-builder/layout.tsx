@@ -4,6 +4,7 @@ import { Info, FileText, Globe, Database, Download } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Ingredient Nutrition Builder | Create Labels from Ingredients',
   description: 'Calculate nutrition facts from your ingredients using USDA database. Perfect for food manufacturers and businesses. Supports US FDA, EU, Indian, Canadian, and Australian formats.',
+
   keywords: [
     'ingredient nutrition calculator',
     'food manufacturing',
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     'food packaging labels',
     'nutrition analysis',
     'USDA nutrition database',
-  ],
+  ]
 };
 
 function RecipeCalculatorInfo() {
