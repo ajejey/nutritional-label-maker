@@ -5,6 +5,8 @@ import { NavBar } from "./components/navigation/nav-bar";
 import { Footer } from "./components/footer";
 import GoogleAnalytics from "./components/google-analytics";
 import { AnalyticsProvider } from "./providers/analytics-provider";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 // import { AuthProvider } from "./context/auth-context";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -111,6 +113,12 @@ export default function RootLayout({
           <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
         {/* <AuthProvider> */}
+        <Suspense fallback={
+          <div className="flex items-center justify-center h-screen">
+            <Loader2 className="w-10 h-10 text-primary animate-spin" />
+          </div>
+        }>
+
           <AnalyticsProvider>
             <div className="flex flex-col min-h-screen">
               <NavBar />
@@ -120,6 +128,7 @@ export default function RootLayout({
               <Footer />
             </div>
           </AnalyticsProvider>
+        </Suspense>
         {/* </AuthProvider> */}
       </body>
     </html>
