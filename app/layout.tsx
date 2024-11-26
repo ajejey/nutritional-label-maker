@@ -15,23 +15,40 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://nutrition-label-maker.vercel.app/'),
 
   title: {
-    default: 'FREE NUTRITION FACTS MAKER | Create FDA-compliant Labels',
-    template: '%s | Nutrition Label Generator'
+    default: '100% FREE Nutrition Label Maker | Create FDA Labels Instantly',
+    template: '%s | Free Nutrition Label Generator'
   },
 
-  description: 'Generate FDA-compliant nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
+  description: 'Create FDA-compliant nutrition labels completely FREE! No hidden costs, no signup required. Perfect for food manufacturers, small businesses & nutritionists. Supports US, EU, Indian & Canadian standards.',
+
+  openGraph: {
+    type: 'website',
+    siteName: 'Nutrition Label Maker',
+    title: '100% FREE Nutrition Label Maker | Create FDA Labels Instantly',
+    description: 'Create FDA-compliant nutrition labels completely FREE! No hidden costs, no signup required. Perfect for food manufacturers, small businesses & nutritionists.',
+    locale: 'en_US',
+    url: 'https://nutrition-label-maker.vercel.app/',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Nutrition Label Maker - Free Online Tool'
+      },
+    ],
+  },
 
   keywords: [
-    'nutrition label generator',
-    'nutrition facts label',
-    'food labeling',
-    'FDA nutrition label',
-    'EU nutrition label',
-    'nutrition declaration',
-    'food packaging labels',
-    'nutrition facts panel',
+    'free nutrition label maker',
+    'FDA nutrition label generator',
+    'free food label creator',
+    'nutrition facts generator',
+    'food labeling tool',
+    'free label maker',
+    'FDA compliant labels',
+    'nutrition facts template',
     'food manufacturer tools',
-    'free nutrition label maker'
+    'small business label maker'
   ],
 
   authors: [{ name: 'Nutrition Label Maker' }],
@@ -58,23 +75,6 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
-
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://nutrition-label-maker.vercel.app/',
-    siteName: 'Nutrition Label Generator',
-    title: 'Create Professional Nutrition Facts Labels Online',
-    description: 'Generate FDA-compliant nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Nutrition Label Generator Preview',
-      },
-    ],
   },
 
   twitter: {

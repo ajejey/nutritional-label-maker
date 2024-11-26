@@ -2,26 +2,31 @@ import { Metadata } from 'next';
 import { FileText, Globe, Download, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Nutrition Label Generator | Create Food Labels Instantly',
-  description: 'Generate professional nutrition labels instantly for your food products. Multiple international formats available. Create FDA-compliant labels with our easy-to-use tool.',
+  title: {
+    default: 'FREE Nutrition Label Generator | Create FDA Labels in Seconds',
+    template: '%s | Free Label Generator'
+  },
+  description: 'Create professional nutrition facts labels 100% FREE! Instant FDA-compliant labels for food products. No signup required, easy to use, download instantly!',
+  
+  openGraph: {
+    type: 'website',
+    siteName: 'Nutrition Label Maker',
+    title: 'FREE Nutrition Label Generator | Create FDA Labels in Seconds',
+    description: 'Create professional nutrition facts labels 100% FREE! Instant FDA-compliant labels for food products. No signup required, easy to use, download instantly!',
+  },
 
   keywords: [
-    'nutrition label generator',
-    'food label maker',
-    'FDA nutrition facts',
-    'food packaging labels',
-    'nutrition information',
-    'label generator',
-    'food labeling',
+    'free nutrition label generator',
+    'instant label maker',
+    'FDA compliant labels',
+    'food label creator',
     'nutrition facts generator',
-    'food product labels',
-    'compliant nutrition labels',
-    'international food labels',
-    'food label design',
-    'nutrition label template',
-    'food packaging design',
-    'label maker online',
-  ]
+    'free food labeling tool',
+    'professional nutrition labels',
+    'quick label maker',
+    'no signup label generator',
+    'download nutrition labels'
+  ],
 };
 
 function GeneratorInfo() {

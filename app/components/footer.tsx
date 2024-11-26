@@ -4,24 +4,24 @@ const footerLinks = {
   product: [
     { label: "Label Generator", href: "/generator" },
     { label: "Features", href: "/#features" },
-    { label: "Pricing", href: "/pricing" },
+    // { label: "Pricing", href: "/pricing" },
   ],
   support: [
-    { label: "Help Center", href: "/help" },
-    { label: "Contact Us", href: "/contact" },
-    { label: "FAQ", href: "/faq" },
+    // { label: "Help Center", href: "/help" },
+    // { label: "Contact Us", href: "/contact" },
+    // { label: "FAQ", href: "/faq" },
   ],
   legal: [
     { label: "Terms of Service", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Cookie Policy", href: "/cookies" },
-    { label: "Acceptable Use Policy", href: "/acceptable-use" },
-    { label: "Refund Policy", href: "/refund-policy" },
+    // { label: "Acceptable Use Policy", href: "/acceptable-use" },
+    // { label: "Refund Policy", href: "/refund-policy" },
   ],
   company: [
-    { label: "About Us", href: "/about" },
+    // { label: "About Us", href: "/about" },
     { label: "Blog", href: "/blog" },
-    { label: "Careers", href: "/careers" },
+    // { label: "Careers", href: "/careers" },
   ],
 };
 
@@ -40,7 +40,7 @@ export function Footer() {
             </p>
             <div className="flex space-x-6">
               <a
-                href="https://twitter.com/nutritionlabelmaker"
+                href="https://twitter.com/"
                 className="text-gray-400 hover:text-gray-500"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -51,7 +51,7 @@ export function Footer() {
                 </svg>
               </a>
               <a
-                href="https://github.com/nutritionlabelmaker"
+                href="https://github.com/"
                 className="text-gray-400 hover:text-gray-500"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -84,7 +84,7 @@ export function Footer() {
                   ))}
                 </ul>
               </div>
-              <div className="mt-10 md:mt-0">
+              {/* <div className="mt-10 md:mt-0">
                 <h3 className="text-sm font-semibold text-gray-900">Support</h3>
                 <ul role="list" className="mt-4 space-y-4">
                   {footerLinks.support.map((item) => (
@@ -98,7 +98,7 @@ export function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
