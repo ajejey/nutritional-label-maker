@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { FileText, Globe, Download, Sparkles } from 'lucide-react';
+import SuspendedPostHogPageView from '../components/posthog/page-view-component';
 
 export const metadata: Metadata = {
   title: {
@@ -180,6 +181,7 @@ export default function GeneratorLayout({
 }) {
   return (
     <>
+    <SuspendedPostHogPageView />
       {children}
       <hr className="my-16 border-t border-gray-200" />
       <GeneratorInfo />

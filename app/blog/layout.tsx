@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { Loader2 } from 'lucide-react'
 import type { Metadata } from "next"
+import SuspendedPostHogPageView from '../components/posthog/page-view-component'
 
 const metadata: Metadata = {
   title: {
@@ -38,6 +39,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           <Loader2 className="w-10 h-10 text-primary animate-spin" />
         </div>
       }>
+        <SuspendedPostHogPageView />
         {children}
       </Suspense>
     </div>

@@ -7,6 +7,8 @@ import GoogleAnalytics from "./components/google-analytics";
 import { AnalyticsProvider } from "./providers/analytics-provider";
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
+import { PostHogProvider } from "./providers";
+import SuspendedPostHogPageView from "./components/posthog/page-view-component";
 // import { AuthProvider } from "./context/auth-context";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -120,14 +122,17 @@ export default function RootLayout({
         }>
 
           <AnalyticsProvider>
+            <PostHogProvider>
             <div className="flex flex-col min-h-screen">
               <NavBar />
+              <SuspendedPostHogPageView />
               <main className="flex-1 pt-16">
                 {children}
               </main>
               <Footer />
             </div>
-          </AnalyticsProvider>
+            </PostHogProvider>
+          </AnalyticsProvider>  
         </Suspense>
         {/* </AuthProvider> */}
       </body>

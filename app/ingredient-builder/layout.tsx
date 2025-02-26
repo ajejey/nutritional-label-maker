@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Info, FileText, Globe, Database, Download } from 'lucide-react';
+import SuspendedPostHogPageView from '../components/posthog/page-view-component';
 
 export const metadata: Metadata = {
   title: 'Ingredient Nutrition Builder | Create Labels from Ingredients',
@@ -161,6 +162,7 @@ export default function RecipeCalculatorLayout({
 }) {
   return (
     <>
+    <SuspendedPostHogPageView />
       {children}
       <hr className="my-16 border-t border-gray-200" />
       <RecipeCalculatorInfo />
