@@ -20,8 +20,8 @@ import { AlertCircle } from "lucide-react";
 
 export default function IngredientBuilder() {
   const [recipe, setRecipe] = useState({
-    name: '',
-    servingSize: 0,
+    name: 'My Recipe',
+    servingSize: 100,
     servingsPerContainer: 1,
     ingredients: [] as RecipeIngredient[],
     totalNutrition: {
