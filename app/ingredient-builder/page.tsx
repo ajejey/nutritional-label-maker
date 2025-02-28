@@ -10,6 +10,13 @@ import LabelPreview from '../components/nutrition-label/label-preview';
 import { calculateIngredientNutrition } from '../lib/usda-api';
 import { RecipeIngredient } from '../types/recipe';
 import { NutritionData } from '../types/nutrition';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
+import { AlertCircle } from "lucide-react";
 
 export default function IngredientBuilder() {
   const [recipe, setRecipe] = useState({
@@ -137,23 +144,21 @@ export default function IngredientBuilder() {
             <button
               key={step.number}
               onClick={() => setActiveStep(step.number)}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                activeStep === step.number
+              className={`p-4 rounded-lg border-2 transition-all ${activeStep === step.number
                   ? 'border-blue-500 bg-blue-50'
                   : step.isComplete
-                  ? 'border-green-200 bg-green-50'
-                  : 'border-gray-200'
-              }`}
+                    ? 'border-green-200 bg-green-50'
+                    : 'border-gray-200'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    activeStep === step.number
+                  className={`w-8 h-8 rounded-full flex items-center justify-center ${activeStep === step.number
                       ? 'bg-blue-500 text-white'
                       : step.isComplete
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-200'
-                  }`}
+                        ? 'bg-green-500 text-white'
+                        : 'bg-gray-200'
+                    }`}
                 >
                   {step.number}
                 </div>
@@ -173,7 +178,7 @@ export default function IngredientBuilder() {
             <Card className="p-6">
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Product Name</Label>
+                  <Label htmlFor="name">Product Name <span className="text-red-500">*</span></Label>
                   <Input
                     id="name"
                     value={recipe.name}
@@ -186,7 +191,7 @@ export default function IngredientBuilder() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="servingSize">Serving Size (g)</Label>
+                    <Label htmlFor="servingSize">Serving Size (g) <span className="text-red-500">*</span></Label>
                     <Input
                       id="servingSize"
                       type="number"
@@ -206,7 +211,7 @@ export default function IngredientBuilder() {
                   </div>
                   <div>
                     <Label htmlFor="servingsPerContainer">
-                      Servings Per Container
+                      Servings Per Container <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="servingsPerContainer"
@@ -271,16 +276,75 @@ export default function IngredientBuilder() {
               </div>
             </Card>
 
-            {recipe.ingredients.length > 0 && recipe.name && recipe.servingSize > 0 && recipe.servingsPerContainer > 0 && (
-              <Button
-                variant="default"
-                className="w-full"
-                onClick={() => setActiveStep(2)}
-              >
-                Review & Generate
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            )}
+            {/* {recipe.ingredients.length > 0 && recipe.name && recipe.servingSize > 0 && recipe.servingsPerContainer > 0 && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="default"
+                      className="w-full"
+                      onClick={() => setActiveStep(2)}
+                    >
+                      Review & Generate
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 text-yellow-500" />
+                      <span>Please review your recipe details before generating the label.</span>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )} */}
+            {(() => {
+              const missingFields = [
+                !recipe.name && "Recipe Name",
+                recipe.ingredients.length === 0 && "Ingredients",
+                !recipe.servingSize && "Serving Size",
+                !recipe.servingsPerContainer && "Servings Per Container"
+              ].filter(Boolean);
+
+              return (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="default"
+                        className="w-full"
+                        disabled={missingFields.length > 0}
+                        onClick={() => missingFields.length === 0 && setActiveStep(2)}
+                      >
+                        {missingFields.length > 0 ? (
+                          <div className="flex items-center">
+                            <AlertCircle className="mr-2 h-4 w-4" />
+                            Review & Generate
+                          </div>
+                        ) : (
+                          <>
+                            Review & Generate
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </>
+                        )}
+                      </Button>
+                    </TooltipTrigger>
+                    {missingFields.length > 0 && (
+                      <TooltipContent side="bottom" className="max-w-xs">
+                        <div className="space-y-2">
+                          <p className="font-bold">Complete the following to proceed:</p>
+                          <ul className="list-disc pl-4 text-sm">
+                            {missingFields.map((field, index) => (
+                              <li key={index}>{field}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })()}
           </div>
         </div>
       )}
