@@ -7,8 +7,8 @@ const footerLinks = {
     // { label: "Pricing", href: "/pricing" },
   ],
   support: [
-    // { label: "Help Center", href: "/help" },
-    // { label: "Contact Us", href: "/contact" },
+    { label: "Help Center", href: "/contact" },
+    { label: "Contact Us", href: "/contact" },
     // { label: "FAQ", href: "/faq" },
   ],
   legal: [
@@ -19,7 +19,7 @@ const footerLinks = {
     // { label: "Refund Policy", href: "/refund-policy" },
   ],
   company: [
-    // { label: "About Us", href: "/about" },
+    { label: "About Us", href: "/about" },
     { label: "Blog", href: "/blog" },
     // { label: "Careers", href: "/careers" },
   ],
@@ -84,7 +84,7 @@ export function Footer() {
                   ))}
                 </ul>
               </div>
-              {/* <div className="mt-10 md:mt-0">
+              <div className="mt-10 md:mt-0">
                 <h3 className="text-sm font-semibold text-gray-900">Support</h3>
                 <ul role="list" className="mt-4 space-y-4">
                   {footerLinks.support.map((item) => (
@@ -98,7 +98,7 @@ export function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div> */}
+              </div>
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
