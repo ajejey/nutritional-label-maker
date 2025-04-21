@@ -74,3 +74,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes shimmer {
+  0%, 100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(300%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}

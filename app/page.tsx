@@ -22,7 +22,7 @@ export default function Home() {
             </p>
 
             {/* CTA Cards */}
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
                 <div>                  
                 <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white shadow-lg">
@@ -60,6 +60,29 @@ export default function Home() {
                   </Button>
                 </Link>
               </div>
+            </div>
+
+            <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+              <div>
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-xl text-white shadow-lg">
+                <Sparkles className="w-6 h-6" />
+              </div>
+              <div className="absolute top-2 -left-7 text-base bg-gradient-to-r from-pink-400 to-purple-500 text-white font-bold px-3 py-1 rounded-full shadow-lg overflow-hidden transform -rotate-[30deg]">
+                <div className="absolute inset-0 bg-white opacity-20 animate-shimmer"></div>
+                New Release
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Daily Nutrition Tracker</h2>
+              <p className="text-gray-600 mb-6">
+                Track your daily nutrition, set personalized goals, and gain insights 
+                into your dietary habits with our comprehensive tracking app.
+              </p>
+              </div>
+              <a href="https://daily-nutrition-tracker.vercel.app" target="_blank" rel="noopener noreferrer">
+                <Button className="w-full bg-green-500 text-gray-50 group-hover:bg-green-600 transition-colors">
+                  Start Tracking
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </a>
             </div>
           </div>
         </div>
