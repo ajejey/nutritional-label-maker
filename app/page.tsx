@@ -77,7 +77,7 @@ export default function Home() {
                 into your dietary habits with our comprehensive tracking app.
               </p>
               </div>
-              <a href="https://daily-nutrition-tracker.vercel.app" target="_blank" rel="noopener noreferrer">
+              <a href="https://dailynutritiontracker.com" target="_blank" rel="noopener noreferrer">
                 <Button className="w-full bg-green-500 text-gray-50 group-hover:bg-green-600 transition-colors">
                   Start Tracking
                   <ArrowRight className="w-4 h-4 ml-2" />
