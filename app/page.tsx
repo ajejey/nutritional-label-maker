@@ -16,10 +16,22 @@ export default function Home() {
               </span>{' '}
               for Your Food Products
             </h1>
-            <p className="text-xl text-gray-600 mb-12">
-              Generate accurate, compliant nutrition labels for your recipes or products.
-              Choose from multiple international formats and download in high resolution.
+            <p className="text-xl text-gray-600 mb-6">
+              Generate accurate, FDA-compliant nutrition labels for your recipes or products.
+              Choose from multiple formats and download in high resolution.
             </p>
+            <div className="flex flex-wrap justify-center gap-2 mb-8">
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Standard US</span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Simplified US</span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Linear US</span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Tabular US</span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Dual-Column US</span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Bilingual US</span>
+              <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">EU</span>
+              <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">Canadian</span>
+              <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">Indian</span>
+              <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">Australian</span>
+            </div>
 
             {/* CTA Cards */}
             <div className="grid md:grid-cols-2 gap-8 mb-8">
@@ -99,9 +111,10 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-semibold">Multiple Formats</h3>
               </div>
-              <p className="text-gray-600">
-                Generate labels in US FDA, EU, Canadian, Australian, and Indian formats.
-                All compliant with local regulations.
+              <p className="text-gray-600 mb-6">
+                Generate labels in multiple US FDA formats (Standard, Simplified, Linear, Tabular, 
+                Dual-Column, Bilingual), plus EU, Canadian, Australian, and Indian formats.
+                All 100% compliant with local regulations.
               </p>
             </div>
 

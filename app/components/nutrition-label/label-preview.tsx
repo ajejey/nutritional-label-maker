@@ -1,6 +1,6 @@
 'use client';
 
-import { LabelFormat } from "@/app/types/nutrition";
+import { LabelFormat, NutritionData } from "@/app/types/nutrition";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Download, Globe } from "lucide-react";
@@ -10,6 +10,13 @@ import { EUNutritionLabel } from "../eu-nutrition-label";
 import { IndianNutritionalLabel } from "../IndianNutritionalLabel";
 import { CanadaNutritionLabel } from "../canada-nutrition-label";
 import { AustraliaNutritionLabel } from "../australia-nutrition-label";
+import { USDualColumnLabel } from "../us-dual-column-label";
+import { USTabularLabel } from "../us-tabular-label";
+import { USLinearLabel } from "../us-linear-label";
+import { USSimplifiedLabel } from "../us-simplified-label";
+import { USVerticalCondensedLabel } from "../us-vertical-condensed-label";
+import { USBilingualLabel } from "../us-bilingual-label";
+import { USAggregateLabel } from "../us-aggregate-label";
 import * as htmlToImage from "html-to-image";
 import { labelInfo } from "@/app/labelInfo";
 import { cn } from "@/lib/utils";
@@ -17,7 +24,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 interface LabelPreviewProps {
-  nutritionData: any;
+  nutritionData: NutritionData;
   className?: string;
   showInfo?: boolean;
   compact?: boolean;
@@ -75,8 +82,15 @@ const LabelPreview = ({
     }
   };
 
-  const labelComponents = {
+  const labelComponents: Record<LabelFormat, React.ComponentType<{data: NutritionData}>> = {
     US: USNutritionLabel,
+    US_SIMPLIFIED: USSimplifiedLabel,
+    US_VERTICAL_CONDENSED: USVerticalCondensedLabel,
+    US_DUAL_COLUMN: USDualColumnLabel,
+    US_BILINGUAL: USBilingualLabel,
+    US_LINEAR: USLinearLabel,
+    US_TABULAR: USTabularLabel,
+    // US_AGGREGATE: USAggregateLabel,
     EU: EUNutritionLabel,
     INDIAN: IndianNutritionalLabel,
     CANADA: CanadaNutritionLabel,
@@ -94,19 +108,28 @@ const LabelPreview = ({
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="gap-2 hover:text-primary-foreground">
                 <Globe className="w-4 h-4" />
-                {format} Format
+                {format.replace(/US_/g, 'US ').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
                 <ChevronDown className="w-4 h-4 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              {Object.keys(labelComponents).map((key) => (
-                <DropdownMenuItem
-                  key={key}
-                  onClick={() => handleFormatChange(key as LabelFormat)}
-                >
-                  {key} Format
-                </DropdownMenuItem>
-              ))}
+              {Object.keys(labelComponents).map((key) => {
+                // Format the key to be more presentable
+                const formattedKey = key
+                  .replace(/US_/g, 'US ')
+                  .replace(/_/g, ' ')
+                  .replace(/\b\w/g, (c) => c.toUpperCase());
+                
+                return (
+                  <DropdownMenuItem
+                    key={key}
+                    onClick={() => handleFormatChange(key as LabelFormat)}
+                    className="hover:text-white focus:text-white"
+                  >
+                   {`${formattedKey} Format`}
+                  </DropdownMenuItem>
+                );
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
 

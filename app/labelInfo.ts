@@ -2,13 +2,90 @@
 
 export const labelInfo = {
   US: {
-    title: "US FDA Nutrition Facts Label",
-    description: "The US FDA Nutrition Facts label is required on most packaged foods in the United States. It provides detailed nutritional information to help consumers make informed food choices.",
+    title: "US FDA Nutrition Facts Label (Standard)",
+    description: "The standard US FDA Nutrition Facts label is required on most packaged foods in the United States. It provides detailed nutritional information in a vertical format.",
     keyFeatures: [
       "Serving size and servings per container",
-      "Calories per serving",
-      "Mandatory nutrients like total fat, saturated fat, trans fat, cholesterol, sodium, total carbohydrate, dietary fiber, total sugars, added sugars, and protein",
-      "Percent Daily Value (%DV) based on a 2,000 calorie diet",
+      "Calories per serving prominently displayed",
+      "Mandatory nutrients with amounts and % Daily Value",
+      "Footnote explaining Daily Values based on a 2,000 calorie diet",
+    ],
+    regulatoryBody: "Regulated by the U.S. Food and Drug Administration (FDA)",
+  },
+  US_DUAL_COLUMN: {
+    title: "US FDA Dual Column Label",
+    description: "The dual column format shows nutrition information per serving and per package. Required when a package contains 2-3 servings and could reasonably be consumed in one sitting.",
+    keyFeatures: [
+      "Side-by-side columns for 'Per Serving' and 'Per Container'",
+      "Helps consumers understand nutrition when consuming entire package",
+      "Same nutrients as standard format but in dual presentation",
+      "Required for packages with 2-3 servings that could be consumed at once",
+    ],
+    regulatoryBody: "Regulated by the U.S. Food and Drug Administration (FDA)",
+  },
+  US_TABULAR: {
+    title: "US FDA Tabular Format",
+    description: "A more condensed horizontal arrangement of the Nutrition Facts, used for products with limited label space but not severely restricted.",
+    keyFeatures: [
+      "Horizontal arrangement of nutrition information",
+      "Maintains all required nutrient information",
+      "Used for products with moderate space limitations",
+      "Same font size requirements as standard format",
+    ],
+    regulatoryBody: "Regulated by the U.S. Food and Drug Administration (FDA)",
+  },
+  US_LINEAR: {
+    title: "US FDA Linear Format",
+    description: "An ultra-condensed single-line or few-line format for very small packages with extremely limited space, such as small candies or gum.",
+    keyFeatures: [
+      "Condensed into a single line or few lines",
+      "For very small packages (less than 40 square inches available)",
+      "Contains abbreviated information with core nutrients",
+      "May use smaller font sizes than standard format",
+    ],
+    regulatoryBody: "Regulated by the U.S. Food and Drug Administration (FDA)",
+  },
+  US_SIMPLIFIED: {
+    title: "US FDA Simplified Format",
+    description: "For products with insignificant amounts of 7 or more of the mandatory nutrients. Allows omission of those nutrients from the label.",
+    keyFeatures: [
+      "Shortened format omitting nutrients present in insignificant amounts",
+      "Must include statement 'Not a significant source of [omitted nutrients]'",
+      "Maintains same structure as standard format for included nutrients",
+      "Used for products like plain coffee, tea, some spices, etc.",
+    ],
+    regulatoryBody: "Regulated by the U.S. Food and Drug Administration (FDA)",
+  },
+  US_AGGREGATE: {
+    title: "US FDA Aggregate Format",
+    description: "For variety packs containing different food items. Shows nutrition information for each food item separately.",
+    keyFeatures: [
+      "Separate nutrition information for each distinct food in a multi-unit package",
+      "Used for variety packs, assortments, or multi-component meals",
+      "May use any of the other formats for each component",
+      "Clearly identifies which information applies to which food",
+    ],
+    regulatoryBody: "Regulated by the U.S. Food and Drug Administration (FDA)",
+  },
+  US_BILINGUAL: {
+    title: "US FDA Bilingual Format",
+    description: "Presents nutrition information in two languages, typically English and Spanish, to serve diverse consumer populations.",
+    keyFeatures: [
+      "Dual-language presentation (typically English and Spanish)",
+      "All required elements presented in both languages",
+      "May use any of the other formats as base structure",
+      "Common in areas with large Spanish-speaking populations",
+    ],
+    regulatoryBody: "Regulated by the U.S. Food and Drug Administration (FDA)",
+  },
+  US_VERTICAL_CONDENSED: {
+    title: "US FDA Vertical Condensed Format",
+    description: "A more compact version of the standard vertical format, used when space is limited but not severely restricted.",
+    keyFeatures: [
+      "Condensed version of standard vertical format",
+      "Maintains all required nutrient information",
+      "Used for products with moderate space limitations",
+      "May use minimum required font sizes",
     ],
     regulatoryBody: "Regulated by the U.S. Food and Drug Administration (FDA)",
   },

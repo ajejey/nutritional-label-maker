@@ -22,13 +22,13 @@ export const metadata: Metadata = {
     template: '%s | Free Nutrition Label Generator'
   },
 
-  description: 'Create FDA-compliant nutrition labels completely FREE! No hidden costs, no signup required. Perfect for food manufacturers, small businesses & nutritionists. Supports US, EU, Indian & Canadian standards.',
+  description: 'Create FDA-compliant nutrition labels completely FREE! No hidden costs, no signup required. Perfect for food manufacturers, small businesses & nutritionists. Supports multiple US formats (Standard, Simplified, Linear, Tabular, Dual-Column, Bilingual), plus EU, Indian, Canadian & Australian standards.',
 
   openGraph: {
     type: 'website',
     siteName: 'Nutrition Label Maker',
     title: '100% FREE Nutrition Label Maker | Create FDA Labels Instantly',
-    description: 'Create FDA-compliant nutrition labels completely FREE! No hidden costs, no signup required. Perfect for food manufacturers, small businesses & nutritionists.',
+    description: 'Create FDA-compliant nutrition labels completely FREE! Multiple US formats available: Standard, Simplified, Linear, Tabular, Dual-Column, and Bilingual. Also supports EU, Indian, Canadian & Australian standards.',
     locale: 'en_US',
     url: 'https://nutrition-label-maker.vercel.app/',
     images: [
@@ -51,7 +51,15 @@ export const metadata: Metadata = {
     'FDA compliant labels',
     'nutrition facts template',
     'food manufacturer tools',
-    'small business label maker'
+    'small business label maker',
+    'US linear nutrition label',
+    'US tabular nutrition label',
+    'simplified nutrition facts',
+    'vertical condensed nutrition label',
+    'dual column nutrition facts',
+    'bilingual nutrition label',
+    'FDA 2023 compliant labels',
+    'multiple nutrition label formats'
   ],
 
   authors: [{ name: 'Nutrition Label Maker' }],
@@ -83,7 +91,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Create Professional Nutrition Facts Labels Online',
-    description: 'Generate FDA-compliant nutrition facts labels for US, EU, Indian, and Canadian standards. Free online tool for food manufacturers and nutritionists.',
+    description: 'Generate FDA-compliant nutrition facts labels in multiple US formats (Standard, Simplified, Linear, Tabular, Dual-Column, Bilingual), plus EU, Indian, Canadian, and Australian standards. Free online tool for food manufacturers and nutritionists.',
     images: ['/twitter-image.jpg'],
     creator: '@nutritionlabelmaker',
   },

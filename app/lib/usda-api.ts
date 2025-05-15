@@ -12,11 +12,14 @@ const NUTRIENT_IDS = {
   totalFat: '204',        // Total lipids (fat)
   saturatedFat: '606',    // Fatty acids, total saturated
   transFat: '605',        // Fatty acids, total trans
+  polyunsaturatedFat: '646', // Fatty acids, total polyunsaturated
+  monounsaturatedFat: '645', // Fatty acids, total monounsaturated
   cholesterol: '601',     // Cholesterol
   sodium: '307',          // Sodium
   totalCarbohydrates: '205', // Carbohydrate, by difference
   dietaryFiber: '291',    // Fiber, total dietary
   sugars: '269',          // Sugars, total
+  addedSugars: '539',     // Added sugars
   protein: '203',         // Protein
   vitaminD: '328',        // Vitamin D (D2 + D3)
   calcium: '301',         // Calcium
@@ -75,11 +78,14 @@ export function extractNutritionData(ingredient: any): Partial<NutritionData> {
     totalFat: findNutrient(NUTRIENT_IDS.totalFat),
     saturatedFat: findNutrient(NUTRIENT_IDS.saturatedFat),
     transFat: findNutrient(NUTRIENT_IDS.transFat),
+    polyunsaturatedFat: findNutrient(NUTRIENT_IDS.polyunsaturatedFat),
+    monounsaturatedFat: findNutrient(NUTRIENT_IDS.monounsaturatedFat),
     cholesterol: findNutrient(NUTRIENT_IDS.cholesterol),
     sodium: findNutrient(NUTRIENT_IDS.sodium),
     totalCarbohydrates: findNutrient(NUTRIENT_IDS.totalCarbohydrates),
     dietaryFiber: findNutrient(NUTRIENT_IDS.dietaryFiber),
     sugars: findNutrient(NUTRIENT_IDS.sugars),
+    addedSugars: findNutrient(NUTRIENT_IDS.addedSugars),
     protein: findNutrient(NUTRIENT_IDS.protein),
     vitaminD: findNutrient(NUTRIENT_IDS.vitaminD),
     calcium: findNutrient(NUTRIENT_IDS.calcium),
