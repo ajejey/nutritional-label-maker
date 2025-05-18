@@ -22,13 +22,13 @@ export const metadata: Metadata = {
     template: '%s | Free Nutrition Label Generator'
   },
 
-  description: 'Create FDA-compliant nutrition labels completely FREE! No hidden costs, no signup required. Perfect for food manufacturers, small businesses & nutritionists. Supports multiple US formats (Standard, Simplified, Linear, Tabular, Dual-Column, Bilingual), plus EU, Indian, Canadian & Australian standards.',
+  description: 'Create FDA-compliant nutrition labels and barcodes completely FREE! No hidden costs, no signup required. Perfect for food manufacturers, small businesses & nutritionists. Generate UPC-A, EAN-13, QR codes, plus multiple nutrition label formats for US, EU, Indian, Canadian & Australian standards.',
 
   openGraph: {
     type: 'website',
     siteName: 'Nutrition Label Maker',
-    title: '100% FREE Nutrition Label Maker | Create FDA Labels Instantly',
-    description: 'Create FDA-compliant nutrition labels completely FREE! Multiple US formats available: Standard, Simplified, Linear, Tabular, Dual-Column, and Bilingual. Also supports EU, Indian, Canadian & Australian standards.',
+    title: '100% FREE Nutrition Label & Barcode Generator | Create FDA-Compliant Labels Instantly',
+    description: 'Create FDA-compliant nutrition labels and barcodes completely FREE! Generate UPC-A, EAN-13, QR codes for retail packaging, plus multiple nutrition label formats for US, EU, Indian, Canadian & Australian standards.',
     locale: 'en_US',
     url: 'https://nutrition-label-maker.vercel.app/',
     images: [
@@ -49,6 +49,11 @@ export const metadata: Metadata = {
     'food labeling tool',
     'free label maker',
     'FDA compliant labels',
+    'UPC barcode generator',
+    'EAN-13 barcode maker',
+    'QR code generator for food',
+    'food product barcode creator',
+    'retail barcode generator',
     'nutrition facts template',
     'food manufacturer tools',
     'small business label maker',

@@ -26,6 +26,10 @@ const routes = [
     href: "/ingredient-builder",
   },
   {
+    label: "Barcode Generator",
+    href: "/barcode-generator",
+  },
+  {
     label: "Blog",
     href: "/blog",
   },

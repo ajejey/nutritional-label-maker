@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, ChefHat, FileText, Globe, Sparkles } from 'lucide-react';
+import { ArrowRight, ChefHat, FileText, Globe, Sparkles, Barcode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
             </div>
 
             {/* CTA Cards */}
-            <div className="grid md:grid-cols-2 gap-8 mb-8">
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
               <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
                 <div>                  
                 <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white shadow-lg">
@@ -68,6 +68,24 @@ export default function Home() {
                 <Link href="/generator">
                   <Button className="w-full bg-indigo-500 text-gray-50 group-hover:bg-indigo-600 transition-colors">
                     Create from Values
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                <div>
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl text-white shadow-lg">
+                  <Barcode className="w-6 h-6" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Barcode Generator</h2>
+                <p className="text-gray-600 mb-6">
+                  Create FDA-compliant barcodes for your food products. Generate UPC-A, EAN-13, and QR codes for retail packaging.
+                </p>
+                </div>
+                <Link href="/barcode-generator">
+                  <Button className="w-full bg-purple-500 text-gray-50 group-hover:bg-purple-600 transition-colors">
+                    Generate Barcodes
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
@@ -158,6 +176,12 @@ export default function Home() {
             nutrition labels today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/barcode-generator">
+              <Button size="lg" className="min-w-[200px] bg-purple-500 hover:bg-purple-600">
+                Generate Barcodes
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
             <Link href="/ingredient-builder">
               <Button size="lg" className="min-w-[200px]">
                 Build from Ingredients

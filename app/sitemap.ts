@@ -28,6 +28,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 1
         },
         {
+            url: `${process.env.NEXT_PUBLIC_APP_URL}/barcode-generator`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly' as const,
+            priority: 0.9
+        },
+        {
             url: `${process.env.NEXT_PUBLIC_APP_URL}/blog`,
             lastModified: new Date(),
             changeFrequency: 'daily' as const,
