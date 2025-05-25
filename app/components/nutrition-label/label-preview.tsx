@@ -115,13 +115,17 @@ const LabelPreview = ({
       // Show download complete status
       setDownloadComplete(true);
       
-      // Show donation dialog with 30% probability after successful download
-      // if (Math.random() < 0.3) {
+      // Check if user has donated in the last month
+      const lastDonationDate = localStorage.getItem('lastDonationDate');
+      const showDonation = !lastDonationDate || 
+        (new Date().getTime() - parseInt(lastDonationDate)) > 30 * 24 * 60 * 60 * 1000;
+      
+      if (showDonation) {
         console.log("Preparing to show donation dialog");
         setTimeout(() => {
           setShowDonationDialog(true);
         }, 1000);
-      // }
+      }
     } catch (error) {
       console.error("Error generating image:", error);
     } finally {
@@ -131,6 +135,8 @@ const LabelPreview = ({
   };
   
   const handleDonation = () => {
+    // Save donation date to localStorage
+    localStorage.setItem('lastDonationDate', new Date().getTime().toString());
     // Open PayPal donation link in a new tab
     window.open(`https://paypal.me/bubbletrends/${donationAmount}USD`, '_blank');
     setShowDonationDialog(false);
