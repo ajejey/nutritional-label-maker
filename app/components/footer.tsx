@@ -3,10 +3,13 @@ import Link from "next/link";
 const footerLinks = {
   product: [
     { label: "Label Generator", href: "/generator" },
+    { label: "Ingredient Builder", href: "/ingredient-builder" },
+    { label: "Barcode Generator", href: "/barcode-generator" },
     { label: "Features", href: "/#features" },
     // { label: "Pricing", href: "/pricing" },
   ],
   support: [
+    { label: "Support Our Work", href: "/support-our-work", highlight: true },
     { label: "Help Center", href: "/contact" },
     { label: "Contact Us", href: "/contact" },
     // { label: "FAQ", href: "/faq" },
@@ -91,9 +94,9 @@ export function Footer() {
                     <li key={item.label}>
                       <Link
                         href={item.href}
-                        className="text-sm text-gray-500 hover:text-gray-900"
+                        className={`text-sm ${item.highlight ? 'font-semibold text-primary hover:text-primary/80' : 'text-gray-500 hover:text-gray-900'}`}
                       >
-                        {item.label}
+                        {item.highlight ? '❤️ ' : ''}{item.label}
                       </Link>
                     </li>
                   ))}

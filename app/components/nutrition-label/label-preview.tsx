@@ -3,8 +3,8 @@
 import { LabelFormat, NutritionData } from "@/app/types/nutrition";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Download, Globe } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, Download, Globe, Check, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
 import { USNutritionLabel } from "../us-nutrition-label";
 import { EUNutritionLabel } from "../eu-nutrition-label";
 import { IndianNutritionalLabel } from "../IndianNutritionalLabel";
@@ -22,6 +22,16 @@ import { labelInfo } from "@/app/labelInfo";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface LabelPreviewProps {
   nutritionData: NutritionData;
@@ -42,6 +52,22 @@ const LabelPreview = ({
 }: LabelPreviewProps) => {
   const [format, setFormat] = useState<LabelFormat>(defaultFormat);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadComplete, setDownloadComplete] = useState(false);
+  const [showDonationDialog, setShowDonationDialog] = useState(false);
+  const [donationAmount, setDonationAmount] = useState(5);
+  
+  // Reset download complete status after 5 seconds
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (downloadComplete) {
+      timer = setTimeout(() => {
+        setDownloadComplete(false);
+      }, 5000);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [downloadComplete]);
 
   const handleFormatChange = (newFormat: LabelFormat) => {
     setFormat(newFormat);
@@ -50,15 +76,21 @@ const LabelPreview = ({
 
   const downloadLabel = async () => {
     const element = document.getElementById("nutrition-label");
-    if (!element || isDownloading) return;
+    if (!element || isDownloading) {
+      console.log("Download aborted: element not found or already downloading");
+      return;
+    }
 
     try {
+      console.log("Starting download process...");
       setIsDownloading(true);
       const desiredDPI = 300;
       const scaleFactor = desiredDPI / 96;
       const width = element.offsetWidth * scaleFactor;
       const height = element.offsetHeight * scaleFactor;
-
+      
+      console.log(`Generating image with dimensions: ${width}x${height}, scale factor: ${scaleFactor}`);
+      
       const dataUrl = await htmlToImage.toPng(element, {
         width: width,
         height: height,
@@ -70,16 +102,38 @@ const LabelPreview = ({
         },
         quality: 1.0,
       });
-
+      
+      console.log("Image generated successfully, creating download link");
+      
       const link = document.createElement("a");
       link.download = `nutrition-label-${format.toLowerCase()}-${new Date().getTime()}.png`;
       link.href = dataUrl;
       link.click();
+      
+      console.log("Download initiated");
+      
+      // Show download complete status
+      setDownloadComplete(true);
+      
+      // Show donation dialog with 30% probability after successful download
+      // if (Math.random() < 0.3) {
+        console.log("Preparing to show donation dialog");
+        setTimeout(() => {
+          setShowDonationDialog(true);
+        }, 1000);
+      // }
     } catch (error) {
       console.error("Error generating image:", error);
     } finally {
+      console.log("Download process completed");
       setIsDownloading(false);
     }
+  };
+  
+  const handleDonation = () => {
+    // Open PayPal donation link in a new tab
+    window.open(`https://paypal.me/bubbletrends/${donationAmount}USD`, '_blank');
+    setShowDonationDialog(false);
   };
 
   const labelComponents: Record<LabelFormat, React.ComponentType<{data: NutritionData}>> = {
@@ -108,7 +162,7 @@ const LabelPreview = ({
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="gap-2 hover:text-primary-foreground">
                 <Globe className="w-4 h-4" />
-                {format.replace(/US_/g, 'US ').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                {format.replace(/US_/g, 'US ').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())} Format
                 <ChevronDown className="w-4 h-4 ml-2" />
               </Button>
             </DropdownMenuTrigger>
@@ -135,12 +189,31 @@ const LabelPreview = ({
 
           <Button
             onClick={downloadLabel}
-            variant="outline"
+            variant={downloadComplete ? "outline" : "default"}
             disabled={isDownloading}
-            className="hover:text-primary-foreground"
+            className={cn(
+              "relative transition-all",
+              downloadComplete ? "bg-green-100 text-green-700 hover:bg-green-200 hover:text-green-800" : "hover:text-white"
+            )}
           >
-            <Download className="mr-2 h-4 w-4" />
-            {isDownloading ? "Generating..." : "Download"}
+            {isDownloading ? (
+              <>
+                <div className="animate-spin mr-2">
+                  <Download className="h-4 w-4" />
+                </div>
+                Generating...
+              </>
+            ) : downloadComplete ? (
+              <>
+                <Check className="mr-2 h-4 w-4" />
+                Downloaded
+              </>
+            ) : (
+              <>
+                <Download className="mr-2 h-4 w-4" />
+                Download
+              </>
+            )}
           </Button>
         </div>
 
@@ -173,6 +246,71 @@ const LabelPreview = ({
           </div>
         )}
       </Card>
+      
+      {/* Donation Dialog */}
+      <Dialog open={showDonationDialog} onOpenChange={setShowDonationDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Support Our Project</DialogTitle>
+            <DialogDescription className="text-center">
+              Your label has been downloaded successfully!
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="flex flex-col items-center py-6">
+            <div className="bg-blue-50 p-4 rounded-full mb-4">
+              <Heart className="h-8 w-8 text-blue-500" />
+            </div>
+            <p className="text-center text-sm text-gray-600 max-w-xs mx-auto mb-6">
+              If you find this tool helpful, please consider supporting us with a small contribution.
+            </p>
+            
+            <div className="w-full max-w-xs mb-6">
+              <Label htmlFor="donation-amount" className="text-sm mb-2 block">Choose an amount</Label>
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {[3, 5, 10].map((amount) => (
+                  <Button 
+                    key={amount}
+                    type="button"
+                    variant={donationAmount === amount ? "default" : "outline"}
+                    onClick={() => setDonationAmount(amount)}
+                    className="h-10"
+                  >
+                    ${amount}
+                  </Button>
+                ))}
+              </div>
+              <div className="flex items-center">
+                <span className="bg-muted px-3 h-10 flex items-center border rounded-l-md">$</span>
+                <Input
+                  id="donation-amount"
+                  type="number"
+                  value={donationAmount}
+                  onChange={(e) => setDonationAmount(Math.max(1, parseInt(e.target.value) || 1))}
+                  min="1"
+                  className="rounded-l-none h-10"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter className="flex-col gap-2 sm:flex-row">
+            <Button
+              variant="outline"
+              onClick={() => setShowDonationDialog(false)}
+              className="w-full sm:w-auto"
+            >
+              No Thanks
+            </Button>
+            <Button 
+              onClick={handleDonation}
+              className="w-full sm:w-auto"
+            >
+              Donate via PayPal
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

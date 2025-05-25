@@ -33,6 +33,11 @@ const routes = [
     label: "Blog",
     href: "/blog",
   },
+  {
+    label: "Support Our Work",
+    href: "/support-our-work",
+    highlight: true,
+  },
 ];
 
 export function NavBar() {
@@ -60,7 +65,7 @@ export function NavBar() {
                     : "text-muted-foreground"
                 )}
               >
-                {route.label}
+                {route.highlight ? '❤️ ' : ''}{route.label}
               </Link>
             ))}
             {/* <Button asChild>
@@ -92,7 +97,7 @@ export function NavBar() {
                         : "text-muted-foreground"
                     )}
                   >
-                    {route.label}
+                    {route.highlight ? '❤️ ' : ''}{route.label}
                   </Link>
                 ))}
                 {/* <Button asChild className="mt-2">

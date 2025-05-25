@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,7 +8,7 @@ import { Trash2, ArrowRight } from 'lucide-react';
 import { USDAIngredientSearch } from '../components/ingredient-search/usda-ingredient-search';
 import LabelPreview from '../components/nutrition-label/label-preview';
 import { calculateIngredientNutrition } from '../lib/usda-api';
-import { RecipeIngredient } from '../types/recipe';
+import { RecipeIngredient, Recipe } from '../types/recipe';
 import { NutritionData } from '../types/nutrition';
 import {
   Tooltip,
@@ -17,11 +17,21 @@ import {
   TooltipTrigger
 } from "@/components/ui/tooltip";
 import { AlertCircle } from "lucide-react";
+import { RecipeHeader } from '../components/recipe-header/recipe-header';
+import { SaveIndicator, SaveStatus } from '../components/save-indicator/save-indicator';
+import { saveCurrentRecipe, getCurrentRecipe, createNewRecipe, loadRecipe } from '../lib/local-storage';
+import { useToast } from '@/components/ui/use-toast';
+// import { useToast } from '@/components/ui/use-toast';
 
 export default function IngredientBuilder() {
-  const [recipe, setRecipe] = useState({
+  const { toast } = useToast();
+
+  // Initialize recipe state with default values
+  const [recipe, setRecipe] = useState<Recipe>({
+    id: `recipe-${Date.now()}`,
     name: 'My Recipe',
     servingSize: 100,
+    servingUnit: 'g',
     servingsPerContainer: 1,
     ingredients: [] as RecipeIngredient[],
     totalNutrition: {
@@ -42,14 +52,48 @@ export default function IngredientBuilder() {
       calcium: 0,
       iron: 0,
       potassium: 0,
-      servingSize: 0,
+      servingSize: 100,
       servingsPerContainer: 1
     } as NutritionData,
   });
 
   const [activeStep, setActiveStep] = useState(1);
   const [showPreview, setShowPreview] = useState(true);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
 
+  // Load saved recipe on initial render or when URL changes
+  useEffect(() => {
+    // Check if there's a recipe ID in the URL
+    const params = new URLSearchParams(window.location.search);
+    const recipeId = params.get('id');
+
+    if (recipeId) {
+      // If we have a recipe ID in the URL, try to load that specific recipe
+      const specificRecipe = loadRecipe(recipeId);
+      if (specificRecipe) {
+        setRecipe(specificRecipe.data.recipe);
+        setActiveStep(specificRecipe.data.activeStep);
+        toast({
+          title: "Recipe Loaded",
+          description: `Loaded "${specificRecipe.name}" from your saved recipes.`,
+        });
+        return;
+      }
+    }
+
+    // If no recipe ID in URL or recipe not found, load the current recipe
+    const savedRecipe = getCurrentRecipe();
+    if (savedRecipe) {
+      setRecipe(savedRecipe.data.recipe);
+      setActiveStep(savedRecipe.data.activeStep);
+    } else {
+      // Create a new recipe if none exists
+      const newRecipe = createNewRecipe();
+      setRecipe(newRecipe.data.recipe);
+    }
+  }, [toast]);
+
+  // Define steps for the wizard
   const steps = [
     {
       number: 1,
@@ -65,26 +109,50 @@ export default function IngredientBuilder() {
     },
   ];
 
+  // Add ingredient handler with auto-save
   const handleAddIngredient = (ingredient: RecipeIngredient) => {
-    setRecipe((prev) => ({
-      ...prev,
-      ingredients: [...prev.ingredients, ingredient],
-      totalNutrition: calculateTotalNutrition([...prev.ingredients, ingredient]),
-    }));
+    setSaveStatus('saving');
+    setRecipe((prev) => {
+      const updatedRecipe = {
+        ...prev,
+        ingredients: [...prev.ingredients, ingredient],
+        totalNutrition: calculateTotalNutrition([...prev.ingredients, ingredient]),
+      };
+
+      // Save to local storage
+      saveCurrentRecipe(updatedRecipe, activeStep);
+
+      // Update save status after a short delay to show the saving animation
+      setTimeout(() => setSaveStatus('saved'), 500);
+
+      return updatedRecipe;
+    });
   };
 
+  // Remove ingredient handler with auto-save
   const handleRemoveIngredient = (index: number) => {
+    setSaveStatus('saving');
     setRecipe((prev) => {
       const newIngredients = prev.ingredients.filter((_, i) => i !== index);
-      return {
+      const updatedRecipe = {
         ...prev,
         ingredients: newIngredients,
         totalNutrition: calculateTotalNutrition(newIngredients),
       };
+
+      // Save to local storage
+      saveCurrentRecipe(updatedRecipe, activeStep);
+
+      // Update save status after a short delay
+      setTimeout(() => setSaveStatus('saved'), 500);
+
+      return updatedRecipe;
     });
   };
 
+  // Calculate total nutrition
   const calculateTotalNutrition = (ingredients: RecipeIngredient[]): NutritionData => {
+    // Existing calculation logic
     return ingredients.reduce((total, ingredient) => {
       const nutrition = calculateIngredientNutrition(
         ingredient.nutritionPer100g,
@@ -133,137 +201,218 @@ export default function IngredientBuilder() {
       potassium: 0,
       servingSize: recipe.servingSize,
       servingsPerContainer: recipe.servingsPerContainer
+    } as NutritionData);
+  };
+
+  // Handle recipe name change
+  const handleRecipeNameChange = (name: string) => {
+    setSaveStatus('saving');
+    setRecipe(prev => {
+      const updatedRecipe = {
+        ...prev,
+        name
+      };
+
+      // Save to local storage
+      saveCurrentRecipe(updatedRecipe, activeStep);
+
+      // Update save status after a short delay
+      setTimeout(() => setSaveStatus('saved'), 500);
+
+      return updatedRecipe;
     });
   };
 
+  // Handle serving size change
+  const handleServingSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value) && value > 0) {
+      setSaveStatus('saving');
+      setRecipe(prev => {
+        const updatedRecipe = {
+          ...prev,
+          servingSize: value,
+          totalNutrition: {
+            ...prev.totalNutrition,
+            servingSize: value
+          }
+        };
+
+        // Save to local storage
+        saveCurrentRecipe(updatedRecipe, activeStep);
+
+        // Update save status after a short delay
+        setTimeout(() => setSaveStatus('saved'), 500);
+
+        return updatedRecipe;
+      });
+    }
+  };
+
+  // Handle servings per container change
+  const handleServingsPerContainerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value) && value > 0) {
+      setSaveStatus('saving');
+      setRecipe(prev => {
+        const updatedRecipe = {
+          ...prev,
+          servingsPerContainer: value,
+          totalNutrition: {
+            ...prev.totalNutrition,
+            servingsPerContainer: value
+          }
+        };
+
+        // Save to local storage
+        saveCurrentRecipe(updatedRecipe, activeStep);
+
+        // Update save status after a short delay
+        setTimeout(() => setSaveStatus('saved'), 500);
+
+        return updatedRecipe;
+      });
+    }
+  };
+
+  // Save when step changes
+  useEffect(() => {
+    if (recipe.id) { // Only save if recipe has been initialized
+      setSaveStatus('saving');
+      saveCurrentRecipe(recipe, activeStep);
+      setTimeout(() => setSaveStatus('saved'), 500);
+    }
+  }, [activeStep]);
+
+  // Missing fields validation
+  const missingFields = [];
+  if (!recipe.name) missingFields.push('Product Name');
+  if (!recipe.servingSize || recipe.servingSize <= 0) missingFields.push('Serving Size');
+  if (!recipe.servingsPerContainer || recipe.servingsPerContainer <= 0) missingFields.push('Servings Per Container');
+  if (recipe.ingredients.length === 0) missingFields.push('At least one ingredient');
+
   return (
-    (<div className="container mx-auto px-4 py-8 max-w-6xl">
-      {/* Header with Progress */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-3xl font-bold">Ingredient Nutrition Builder</h1>
-            <p className="text-gray-600">Create nutrition labels from your ingredients</p>
+    <>
+      {/* <RecipeHeader 
+        recipeName={recipe.name} 
+        onNameChange={handleRecipeNameChange} 
+        saveStatus={saveStatus} 
+        currentRecipeId={recipe.id}
+      /> */}
+      <div className="container mx-auto py-8 px-4 max-w-6xl">
+        {/* Header with Progress */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-3xl font-bold">Ingredient Nutrition Builder</h1>
+              <p className="text-gray-600">Create nutrition labels from your ingredients</p>
+            </div>
+          </div>
+          <RecipeHeader
+            recipeName={recipe.name}
+            onNameChange={handleRecipeNameChange}
+            saveStatus={saveStatus}
+            currentRecipeId={recipe.id}
+          />
+          {/* Progress Steps */}
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            {steps.map((step) => (
+              <button
+                key={step.number}
+                onClick={() => setActiveStep(step.number)}
+                className={`p-4 rounded-lg border-2 transition-all ${activeStep === step.number
+                    ? 'border-blue-500 bg-blue-50'
+                    : step.isComplete
+                      ? 'border-green-200 bg-green-50'
+                      : 'border-gray-200'
+                  }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${activeStep === step.number
+                        ? 'bg-blue-500 text-white'
+                        : step.isComplete
+                          ? 'bg-green-500 text-white'
+                          : 'bg-gray-200'
+                      }`}
+                  >
+                    {step.number}
+                  </div>
+                  <div className="text-left">
+                    <div className="font-medium">{step.title}</div>
+                    <div className="text-sm text-gray-500">{step.description}</div>
+                  </div>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Progress Steps */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
-          {steps.map((step) => (
-            <button
-              key={step.number}
-              onClick={() => setActiveStep(step.number)}
-              className={`p-4 rounded-lg border-2 transition-all ${activeStep === step.number
-                  ? 'border-blue-500 bg-blue-50'
-                  : step.isComplete
-                    ? 'border-green-200 bg-green-50'
-                    : 'border-gray-200'
-                }`}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${activeStep === step.number
-                      ? 'bg-blue-500 text-white'
-                      : step.isComplete
-                        ? 'bg-green-500 text-white'
-                        : 'bg-gray-200'
-                    }`}
-                >
-                  {step.number}
-                </div>
-                <div className="text-left">
-                  <div className="font-medium">{step.title}</div>
-                  <div className="text-sm text-gray-500">{step.description}</div>
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-      {/* Step Content */}
-      {activeStep === 1 && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <Card className="p-6">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="name">Product Name <span className="text-red-500">*</span></Label>
-                  <Input
-                    id="name"
-                    value={recipe.name}
-                    onChange={(e) =>
-                      setRecipe((prev) => ({ ...prev, name: e.target.value }))
-                    }
-                    placeholder="Enter product name"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
+        {/* Step Content */}
+        {activeStep === 1 && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <Card className="p-6">
+                <div className="space-y-4">
                   <div>
-                    <Label htmlFor="servingSize">Serving Size (g) <span className="text-red-500">*</span></Label>
+                    <Label htmlFor="name">Product Name <span className="text-red-500">*</span></Label>
                     <Input
-                      id="servingSize"
-                      type="number"
-                      value={recipe.servingSize || ''}
-                      onChange={(e) =>
-                        setRecipe((prev) => ({
-                          ...prev,
-                          servingSize: parseFloat(e.target.value) || 0,
-                          totalNutrition: {
-                            ...prev.totalNutrition,
-                            servingSize: parseFloat(e.target.value) || 0
-                          }
-                        }))
-                      }
-                      placeholder="Enter serving size"
+                      id="name"
+                      value={recipe.name}
+                      onChange={(e) => handleRecipeNameChange(e.target.value)}
+                      placeholder="Enter product name"
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="servingsPerContainer">
-                      Servings Per Container <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="servingsPerContainer"
-                      type="number"
-                      value={recipe.servingsPerContainer || ''}
-                      onChange={(e) =>
-                        setRecipe((prev) => ({
-                          ...prev,
-                          servingsPerContainer: parseFloat(e.target.value) || 1,
-                          totalNutrition: {
-                            ...prev.totalNutrition,
-                            servingsPerContainer: parseFloat(e.target.value) || 1
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="servingSize">Serving Size (g) <span className="text-red-500">*</span></Label>
+                      <Input
+                        type="number"
+                        id="servingSize"
+                        placeholder="100"
+                        value={recipe.servingSize || ''}
+                        onChange={handleServingSizeChange}
+                        onBlur={() => {
+                          if (!recipe.servingSize) {
+                            setRecipe(prev => ({ ...prev, servingSize: 100 }));
                           }
-                        }))
-                      }
-                      placeholder="Enter servings per container"
-                    />
+                        }}
+                        className="w-full"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="servingsPerContainer">
+                        Servings Per Container <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="number"
+                        id="servingsPerContainer"
+                        placeholder="1"
+                        value={recipe.servingsPerContainer || ''}
+                        onChange={handleServingsPerContainerChange}
+                        onBlur={() => {
+                          if (!recipe.servingsPerContainer) {
+                            setRecipe(prev => ({ ...prev, servingsPerContainer: 1 }));
+                          }
+                        }}
+                        className="w-full"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Card>
 
-              <div className="mt-6">
-                <USDAIngredientSearch onIngredientAdd={handleAddIngredient} />
-              </div>
-            </Card>
-          </div>
+              <USDAIngredientSearch onIngredientAdd={handleAddIngredient} />
 
-          <div className="space-y-6">
-            <Card className="p-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium">Current Ingredients</h3>
-                </div>
-                {recipe.ingredients.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    Search and add ingredients to your recipe
-                  </div>
-                ) : (
-                  <div className="space-y-2">
+              {recipe.ingredients.length > 0 && (
+                <Card className="p-6">
+                  <h3 className="text-lg font-semibold mb-4">Added Ingredients</h3>
+                  <div className="space-y-3">
                     {recipe.ingredients.map((ingredient, index) => (
                       <div
-                        key={index}
-                        className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                        key={`${ingredient.fdcId}-${index}`}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                       >
                         <div>
                           <div className="font-medium">{ingredient.name}</div>
@@ -276,146 +425,139 @@ export default function IngredientBuilder() {
                           size="icon"
                           onClick={() => handleRemoveIngredient(index)}
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="h-4 w-4 text-red-500" />
                         </Button>
                       </div>
                     ))}
                   </div>
-                )}
-              </div>
-            </Card>
+                </Card>
+              )}
 
-            {/* {recipe.ingredients.length > 0 && recipe.name && recipe.servingSize > 0 && recipe.servingsPerContainer > 0 && (
+              {/* Next Step Button */}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
                       variant="default"
                       className="w-full"
-                      onClick={() => setActiveStep(2)}
+                      disabled={missingFields.length > 0}
+                      onClick={() => missingFields.length === 0 && setActiveStep(2)}
                     >
-                      Review & Generate
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      {missingFields.length > 0 ? (
+                        <div className="flex items-center">
+                          <AlertCircle className="mr-2 h-4 w-4" />
+                          Review & Generate
+                        </div>
+                      ) : (
+                        <>
+                          Review & Generate
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </>
+                      )}
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <div className="flex items-center gap-2">
-                      <AlertCircle className="w-4 h-4 text-yellow-500" />
-                      <span>Please review your recipe details before generating the label.</span>
-                    </div>
-                  </TooltipContent>
+                  {missingFields.length > 0 && (
+                    <TooltipContent side="bottom" className="max-w-xs">
+                      <div className="space-y-2">
+                        <p className="font-bold">Complete the following to proceed:</p>
+                        <ul className="list-disc pl-4 text-sm">
+                          {missingFields.map((field, index) => (
+                            <li key={index}>{field}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </TooltipContent>
+                  )}
                 </Tooltip>
               </TooltipProvider>
-            )} */}
-            {(() => {
-              const missingFields = [
-                !recipe.name && "Recipe Name",
-                recipe.ingredients.length === 0 && "Ingredients",
-                !recipe.servingSize && "Serving Size",
-                !recipe.servingsPerContainer && "Servings Per Container"
-              ].filter(Boolean);
+            </div>
 
-              return (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="default"
-                        className="w-full"
-                        disabled={missingFields.length > 0}
-                        onClick={() => missingFields.length === 0 && setActiveStep(2)}
-                      >
-                        {missingFields.length > 0 ? (
-                          <div className="flex items-center">
-                            <AlertCircle className="mr-2 h-4 w-4" />
-                            Review & Generate
-                          </div>
-                        ) : (
-                          <>
-                            Review & Generate
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </>
-                        )}
-                      </Button>
-                    </TooltipTrigger>
-                    {missingFields.length > 0 && (
-                      <TooltipContent side="bottom" className="max-w-xs">
-                        <div className="space-y-2">
-                          <p className="font-bold">Complete the following to proceed:</p>
-                          <ul className="list-disc pl-4 text-sm">
-                            {missingFields.map((field, index) => (
-                              <li key={index}>{field}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </TooltipContent>
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            })()}
+            {/* Preview Column */}
+            <div className="space-y-6">
+              <Card className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold">Nutrition Label Preview</h2>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowPreview(!showPreview)}
+                  >
+                    {showPreview ? 'Hide Preview' : 'Show Preview'}
+                  </Button>
+                </div>
+                {showPreview && (
+                  <LabelPreview
+                    nutritionData={recipe.totalNutrition}
+                    compact
+                    showInfo={false}
+                  />
+                )}
+              </Card>
+            </div>
           </div>
-        </div>
-      )}
-      {activeStep === 2 && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <Card className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Recipe Summary</h2>
-              </div>
-              <div className="space-y-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="grid grid-cols-2 gap-y-2">
-                    <div className="text-gray-500">Product Name</div>
-                    <div className="font-medium">{recipe.name}</div>
-                    <div className="text-gray-500">Serving Size</div>
-                    <div className="font-medium">{recipe.servingSize}g</div>
-                    <div className="text-gray-500">Servings Per Container</div>
-                    <div className="font-medium">{recipe.servingsPerContainer}</div>
+        )}
+
+        {/* Review Step */}
+        {activeStep === 2 && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <Card className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold">Recipe Summary</h2>
+                </div>
+                <div className="space-y-4">
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="grid grid-cols-2 gap-y-2">
+                      <div className="text-gray-500">Product Name</div>
+                      <div className="font-medium">{recipe.name}</div>
+                      <div className="text-gray-500">Serving Size</div>
+                      <div className="font-medium">{recipe.servingSize}g</div>
+                      <div className="text-gray-500">Servings Per Container</div>
+                      <div className="font-medium">{recipe.servingsPerContainer}</div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    {Object.entries(recipe.totalNutrition).map(([key, value]) => (
+                      <div key={key} className="p-3 bg-gray-50 rounded-lg">
+                        <div className="text-sm text-gray-500 capitalize">
+                          {key.replace(/([A-Z])/g, ' $1').trim()}
+                        </div>
+                        <div className="font-medium">
+                          {typeof value === 'number'
+                            ? `${value.toFixed(1)}${key === 'calories' ? ' kcal' : 'g'}`
+                            : String(value)}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
+              </Card>
 
-                <div className="grid grid-cols-2 gap-4">
-                  {Object.entries(recipe.totalNutrition).map(([key, value]) => (
-                    <div key={key} className="p-3 bg-gray-50 rounded-lg">
-                      <div className="text-sm text-gray-500 capitalize">
-                        {key.replace(/([A-Z])/g, ' $1').trim()}
-                      </div>
-                      <div className="font-medium">
-                        {typeof value === 'number'
-                          ? `${value.toFixed(1)}${key === 'calories' ? ' kcal' : 'g'}`
-                          : String(value)}
-                      </div>
-                    </div>
-                  ))}
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setActiveStep(1)}
+              >
+                Back to Ingredients
+              </Button>
+            </div>
+
+            <div className="space-y-6">
+              <Card className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <h2 className="text-xl font-semibold">Nutrition Label Preview</h2>
                 </div>
-              </div>
-            </Card>
-
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => setActiveStep(1)}
-            >
-              Back to Ingredients
-            </Button>
+                <LabelPreview
+                  nutritionData={recipe.totalNutrition}
+                  compact
+                  showInfo={false}
+                />
+              </Card>
+            </div>
           </div>
-
-          <div className="space-y-6">
-            <Card className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-xl font-semibold">Nutrition Label Preview</h2>
-              </div>
-              <LabelPreview
-                nutritionData={recipe.totalNutrition}
-                compact
-                showInfo={false}
-              />
-            </Card>
-          </div>
-        </div>
-      )}
-    </div>)
+        )}
+      </div>
+    </>
   );
 }
