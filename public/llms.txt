@@ -1,0 +1,19 @@
+# Nutrition Label Maker
+
+Nutrition Label Maker is a comprehensive platform for generating nutrition labels, barcodes, and managing recipes. We provide tools for individuals and businesses to create compliant and informative labels for their food products.
+
+## Key Features:
+- Nutrition Label Generator: Create FDA-compliant nutrition fact labels for your recipes.
+- Barcode Generator: Generate various types of barcodes for your products.
+- Ingredient Builder: Manage and customize your ingredients for accurate labeling.
+- Recipe Management: Save and organize your recipes in one place.
+
+## Important Links:
+- [/about](https://nutrition-label-maker.vercel.app/about) - Learn more about Nutrition Label Maker.
+- [/contact](https://nutrition-label-maker.vercel.app/contact) - Get in touch with our team.
+- [/privacy](https://nutrition-label-maker.vercel.app/privacy) - Read our privacy policy.
+- [/terms](https://nutrition-label-maker.vercel.app/terms) - Review our terms of service.
+- [/generator](https://nutrition-label-maker.vercel.app/generator) - Access the Nutrition Label Generator.
+- [/barcode-generator](https://nutrition-label-maker.vercel.app/barcode-generator) - Access the Barcode Generator.
+- [/ingredient-builder](https://nutrition-label-maker.vercel.app/ingredient-builder) - Access the Ingredient Builder.
+- [/blog](https://nutrition-label-maker.vercel.app/blog) - Read our latest articles and updates.
