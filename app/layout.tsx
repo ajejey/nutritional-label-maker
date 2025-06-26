@@ -113,9 +113,27 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Nutrition Label Maker",
+    "url": "https://nutrition-label-maker.vercel.app/",
+    "logo": "https://nutrition-label-maker.vercel.app/favicon-32x32.png",
+    "description": "Create FDA-compliant nutrition labels and barcodes completely FREE! No hidden costs, no signup required. Perfect for food manufacturers, small businesses & nutritionists.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "email": "ajejey@gmail.com"
+    }
+  };
+
   return (
     <html lang="en">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         <meta name="google-adsense-account" content="ca-pub-3613850686549619"/>
         <Script 
           async 
