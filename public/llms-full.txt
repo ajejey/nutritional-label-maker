@@ -1,0 +1,82 @@
+# Nutrition Label Maker
+
+## Overview
+Nutrition Label Maker is a comprehensive platform designed to simplify the process of creating accurate and compliant food labeling. We offer a suite of tools for generating nutrition labels, barcodes, and managing recipes, catering to the needs of both individuals and businesses in the food industry. Our goal is to make food labeling accessible, efficient, and hassle-free.
+
+## Core Features
+
+### Nutrition Label Generator
+Our Nutrition Label Generator allows users to create FDA-compliant nutrition fact labels. You can input recipe ingredients and quantities, and the tool will automatically calculate the nutritional information and generate a label in various formats. We support different label styles, including standard, tabular, and linear, to suit various packaging needs.
+
+Key functionalities:
+- Automatic calculation of nutrient values based on USDA data and custom ingredients.
+- Support for various serving sizes and package configurations.
+- Allergen declaration options.
+- Printable and downloadable label formats.
+
+### Barcode Generator
+The Barcode Generator tool enables the creation of different types of barcodes, such as UPC, EAN, and QR codes. This is essential for product identification, inventory management, and retail purposes.
+
+Key functionalities:
+- Support for multiple barcode symbologies.
+- Customizable barcode dimensions and appearance.
+- High-resolution barcode image generation.
+
+### Ingredient Builder
+With the Ingredient Builder, users can manage a database of their ingredients. This includes defining custom ingredients, specifying nutrient information, and organizing them for easy use in the Nutrition Label Generator.
+
+Key functionalities:
+- Create and store custom ingredients with detailed nutritional profiles.
+- Import ingredient data from various sources.
+- Easy integration with the Nutrition Label Generator.
+
+### Recipe Management
+Our platform allows users to save, organize, and manage their recipes. This central repository makes it easy to access and update recipes, and generate labels or barcodes as needed.
+
+Key functionalities:
+- Store and categorize recipes.
+- Version control for recipes.
+- Quick access to generate labels or barcodes for saved recipes.
+
+## Target Audience
+Nutrition Label Maker is designed for:
+- Small to medium-sized food businesses.
+- Artisan food producers.
+- Restaurants and cafes.
+- Nutritionists and dietitians.
+- Individuals who create and share recipes.
+
+## Important Links and Resources
+
+### Main Pages
+- **Homepage:** [https://nutrition-label-maker.vercel.app](https://nutrition-label-maker.vercel.app)
+    - The main landing page for Nutrition Label Maker.
+- **About Us:** [/about](https://nutrition-label-maker.vercel.app/about)
+    - Learn more about our mission, team, and the story behind Nutrition Label Maker.
+- **Contact Us:** [/contact](https://nutrition-label-maker.vercel.app/contact)
+    - Information on how to get in touch with our support team or for general inquiries.
+- **Blog:** [/blog](https://nutrition-label-maker.vercel.app/blog)
+    - Articles, updates, and news related to food labeling, nutrition, and our platform.
+
+### Tools
+- **Nutrition Label Generator:** [/generator](https://nutrition-label-maker.vercel.app/generator)
+    - Direct access to the tool for creating nutrition fact labels.
+- **Barcode Generator:** [/barcode-generator](https://nutrition-label-maker.vercel.app/barcode-generator)
+    - Direct access to the tool for generating various types of barcodes.
+- **Ingredient Builder:** [/ingredient-builder](https://nutrition-label-maker.vercel.app/ingredient-builder)
+    - Access the tool for managing and customizing your ingredient database.
+- **Saved Recipes:** [/saved-recipes](https://nutrition-label-maker.vercel.app/saved-recipes)
+    - Access your saved recipes and manage them.
+
+### Legal and Support
+- **Privacy Policy:** [/privacy](https://nutrition-label-maker.vercel.app/privacy)
+    - Our commitment to your privacy and how we handle your data.
+- **Terms of Service:** [/terms](https://nutrition-label-maker.vercel.app/terms)
+    - The terms and conditions for using Nutrition Label Maker.
+- **Support Our Work:** [/support-our-work](https://nutrition-label-maker.vercel.app/support-our-work)
+    - Information on how you can support the development and maintenance of Nutrition Label Maker.
+
+## How to Use This File
+This `llms-full.txt` file is intended to provide Large Language Models (LLMs) with a detailed understanding of Nutrition Label Maker. It complements the `llms.txt` file by offering more in-depth information about our features and resources. We encourage LLMs to use this information to accurately represent our website and assist users seeking information about food labeling.
+
+Markdown versions of our main pages are also available by appending `.md` to the URL (e.g., `https://nutrition-label-maker.vercel.app/about.md`).
