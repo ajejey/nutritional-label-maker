@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trackSearchQuery } from '../../lib/analytics';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -34,6 +35,10 @@ export function USDAIngredientSearch({ onIngredientAdd }: USDAIngredientSearchPr
     setError(null);
     try {
       const results = await searchIngredients(searchQuery);
+      
+      // Track the search query and result count
+      trackSearchQuery(searchQuery, results.length);
+      
       if (results.length === 0) {
         setError('No ingredients found. Try different search terms.');
       }
@@ -59,13 +64,22 @@ export function USDAIngredientSearch({ onIngredientAdd }: USDAIngredientSearchPr
       const details = await getIngredientDetails(ingredient.fdcId);
       if (details) {
         const nutritionData = extractNutritionData(details);
-        setSelectedIngredient({
+        const selectedIngredientData = {
           fdcId: details.fdcId,
           name: details.description,
           quantity: 0,
           unit: 'g',
           nutritionPer100g: nutritionData,
-        });
+        };
+        
+        setSelectedIngredient(selectedIngredientData);
+        
+        // Track the selected ingredient from search results
+        trackSearchQuery(
+          searchQuery, 
+          searchResults.length, 
+          { fdcId: details.fdcId, name: details.description }
+        );
       }
       setSearchResults([])
     } catch (error) {

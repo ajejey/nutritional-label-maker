@@ -1,5 +1,6 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { trackRecipe, trackSearchQuery } from '../../app/lib/analytics';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,6 +61,65 @@ export default function IngredientBuilder() {
   const [activeStep, setActiveStep] = useState(1);
   const [showPreview, setShowPreview] = useState(true);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
+  
+  // Track recipe changes with debouncing
+  const lastTrackedRef = useRef<string>('');
+  const trackTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const prevStepRef = useRef(activeStep);
+  
+  // Debounced tracking function to avoid excessive API calls
+  const debouncedTrackRecipe = useCallback((recipeToTrack: Recipe) => {
+    // Clear any existing timeout
+    if (trackTimeoutRef.current) {
+      clearTimeout(trackTimeoutRef.current);
+    }
+    
+    // Set a new timeout
+    trackTimeoutRef.current = setTimeout(() => {
+      // Make sure recipe has required fields before tracking
+      if (recipeToTrack && recipeToTrack.name && recipeToTrack.ingredients && Array.isArray(recipeToTrack.ingredients)) {
+        // Create a signature of the recipe to avoid duplicate tracking
+        const recipeSignature = JSON.stringify({
+          name: recipeToTrack.name,
+          ingredientCount: recipeToTrack.ingredients.length,
+          ingredients: recipeToTrack.ingredients.map(i => i.fdcId)
+        });
+        
+        // Only track if the recipe has changed significantly
+        if (recipeSignature !== lastTrackedRef.current) {
+          console.log('Tracking recipe changes:', recipeToTrack);
+          trackRecipe(recipeToTrack);
+          lastTrackedRef.current = recipeSignature;
+        }
+      } else {
+        console.warn('Cannot track recipe - incomplete data:', recipeToTrack);
+      }
+    }, 3000); // 3 second debounce
+  }, []);
+  
+  // Track recipe in multiple scenarios
+  useEffect(() => {
+    // Track when recipe has meaningful content
+    if (recipe && recipe.name && recipe.ingredients && recipe.ingredients.length > 0) {
+      debouncedTrackRecipe(recipe);
+    }
+    
+    // Also track when user reaches review step
+    if (activeStep === 2 && prevStepRef.current !== 2) {
+      if (recipe && recipe.name && recipe.ingredients && Array.isArray(recipe.ingredients)) {
+        console.log('Tracking recipe on review step:', recipe);
+        trackRecipe(recipe);
+      }
+    }
+    prevStepRef.current = activeStep;
+    
+    // Cleanup timeout on unmount
+    return () => {
+      if (trackTimeoutRef.current) {
+        clearTimeout(trackTimeoutRef.current);
+      }
+    };
+  }, [activeStep, recipe, debouncedTrackRecipe]);
 
   // Load saved recipe on initial render or when URL changes
   useEffect(() => {
@@ -68,30 +128,29 @@ export default function IngredientBuilder() {
     const recipeId = params.get('id');
 
     if (recipeId) {
-      // If we have a recipe ID in the URL, try to load that specific recipe
-      const specificRecipe = loadRecipe(recipeId);
-      if (specificRecipe) {
-        setRecipe(specificRecipe.data.recipe);
-        setActiveStep(specificRecipe.data.activeStep);
+      // Load the specific recipe
+      const loadedRecipe = loadRecipe(recipeId);
+      if (loadedRecipe) {
+        setRecipe(loadedRecipe.data.recipe);
+        setActiveStep(loadedRecipe.data.activeStep);
         toast({
           title: "Recipe Loaded",
-          description: `Loaded "${specificRecipe.name}" from your saved recipes.`,
+          description: `Loaded recipe: ${loadedRecipe.name}`,
         });
-        return;
+      }
+    } else {
+      // Load the current recipe or create a new one
+      const currentRecipe = getCurrentRecipe();
+      if (currentRecipe) {
+        setRecipe(currentRecipe.data.recipe);
+        setActiveStep(currentRecipe.data.activeStep);
+      } else {
+        // Create a new recipe
+        const newRecipe = createNewRecipe();
+        setRecipe(newRecipe.data.recipe);
       }
     }
-
-    // If no recipe ID in URL or recipe not found, load the current recipe
-    const savedRecipe = getCurrentRecipe();
-    if (savedRecipe) {
-      setRecipe(savedRecipe.data.recipe);
-      setActiveStep(savedRecipe.data.activeStep);
-    } else {
-      // Create a new recipe if none exists
-      const newRecipe = createNewRecipe();
-      setRecipe(newRecipe.data.recipe);
-    }
-  }, [toast]);
+  }, []);
 
   // Define steps for the wizard
   const steps = [
@@ -282,7 +341,7 @@ export default function IngredientBuilder() {
       saveCurrentRecipe(recipe, activeStep);
       setTimeout(() => setSaveStatus('saved'), 500);
     }
-  }, [activeStep]);
+  }, [activeStep, recipe]);
 
   // Missing fields validation
   const missingFields = [];
@@ -505,6 +564,7 @@ export default function IngredientBuilder() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-semibold">Recipe Summary</h2>
                 </div>
+
                 <div className="space-y-4">
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="grid grid-cols-2 gap-y-2">
