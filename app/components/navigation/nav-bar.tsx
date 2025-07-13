@@ -26,13 +26,17 @@ const routes = [
     href: "/ingredient-builder",
   },
   {
+    label: "Recipe Management",
+    href: "/recipe-management",
+  },
+  {
     label: "Barcode Generator",
     href: "/barcode-generator",
   },
-  {
-    label: "Blog",
-    href: "/blog",
-  },
+  // {
+  //   label: "Blog",
+  //   href: "/blog",
+  // },
   {
     label: "Support Our Work",
     href: "/support-our-work",
@@ -59,13 +63,16 @@ export function NavBar() {
                 key={route.href}
                 href={route.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary",
+                  "text-sm font-medium transition-colors",
                   pathname === route.href
-                    ? "text-black dark:text-white"
-                    : "text-muted-foreground"
+                    ? "text-primary font-semibold"
+                    : "text-muted-foreground hover:text-primary/80"
                 )}
               >
-                {route.highlight ? '❤️ ' : ''}{route.label}
+                {route.highlight ? '❤️ ' : ''}
+                <span className={pathname === route.href ? "border-b-2 border-primary pb-4" : ""}>
+                  {route.label}
+                </span>
               </Link>
             ))}
             {/* <Button asChild>

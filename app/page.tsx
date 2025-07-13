@@ -34,17 +34,17 @@ export default function Home() {
             </div>
 
             {/* CTA Cards */}
-            <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div className="grid md:grid-cols-2 gap-9 mb-8">
               <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
-                <div>                  
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white shadow-lg">
-                  <ChefHat className="w-6 h-6" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Ingredient Nutrition Builder</h2>
-                <p className="text-gray-600 mb-6">
-                  Calculate nutrition facts from your ingredients using our USDA database.
-                  Perfect for manufacturers and food businesses.
-                </p>
+                <div>
+                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white shadow-lg">
+                    <ChefHat className="w-6 h-6" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Ingredient Nutrition Builder</h2>
+                  <p className="text-gray-600 mb-6">
+                    Calculate nutrition facts from your ingredients using our USDA database.
+                    Perfect for manufacturers and food businesses.
+                  </p>
                 </div>
                 <Link href="/ingredient-builder">
                   <Button className="w-full group-hover:bg-blue-600 transition-colors">
@@ -56,14 +56,14 @@ export default function Home() {
 
               <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
                 <div>
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl text-white shadow-lg">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Direct Nutrition Generator</h2>
-                <p className="text-gray-600 mb-6">
-                  Already have nutrition information? Generate labels directly by entering
-                  your nutrition facts data.
-                </p>
+                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl text-white shadow-lg">
+                    <FileText className="w-6 h-6" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Direct Nutrition Generator</h2>
+                  <p className="text-gray-600 mb-6">
+                    Already have nutrition information? Generate labels directly by entering
+                    your nutrition facts data.
+                  </p>
                 </div>
                 <Link href="/generator">
                   <Button className="w-full bg-indigo-500 text-gray-50 group-hover:bg-indigo-600 transition-colors">
@@ -75,17 +75,36 @@ export default function Home() {
 
               <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
                 <div>
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl text-white shadow-lg">
-                  <Barcode className="w-6 h-6" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Barcode Generator</h2>
-                <p className="text-gray-600 mb-6">
-                  Create FDA-compliant barcodes for your food products. Generate UPC-A, EAN-13, and QR codes for retail packaging.
-                </p>
+                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl text-white shadow-lg">
+                    <Barcode className="w-6 h-6" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Barcode Generator</h2>
+                  <p className="text-gray-600 mb-6">
+                    Create FDA-compliant barcodes for your food products. Generate UPC-A, EAN-13, and QR codes for retail packaging.
+                  </p>
                 </div>
                 <Link href="/barcode-generator">
                   <Button className="w-full bg-purple-500 text-gray-50 group-hover:bg-purple-600 transition-colors">
                     Generate Barcodes
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="group flex flex-col justify-between relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                <div>
+                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 p-3 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl text-white shadow-lg">
+                    <ChefHat className="w-6 h-6" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 mt-4 mb-4">Recipe Management</h2>
+                  <p className="text-gray-600 mb-6">
+                    Manage your recipes, scale ingredients, convert units, and calculate costs with our baker&apos;s toolkit.
+                    <span className="bg-yellow-100 px-1 rounded text-xs ml-1">New!</span>
+                  </p>
+                </div>
+                <Link href="/recipe-management">
+                  <Button className="w-full bg-orange-500 text-gray-50 group-hover:bg-orange-600 transition-colors">
+                    Manage Recipes
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
@@ -126,7 +145,7 @@ export default function Home() {
                 <h3 className="text-xl font-semibold">Multiple Formats</h3>
               </div>
               <p className="text-gray-600 mb-6">
-                Generate labels in multiple US FDA formats (Standard, Simplified, Linear, Tabular, 
+                Generate labels in multiple US FDA formats (Standard, Simplified, Linear, Tabular,
                 Dual-Column, Bilingual), plus EU, Canadian, Australian, and Indian formats.
                 All 100% compliant with local regulations.
               </p>
@@ -171,7 +190,7 @@ export default function Home() {
             Choose the method that works best for you and start generating professional
             nutrition labels today.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
             <Link href="/barcode-generator">
               <Button size="lg" className="min-w-[200px] bg-purple-500 hover:bg-purple-600">
                 Generate Barcodes
@@ -181,6 +200,12 @@ export default function Home() {
             <Link href="/ingredient-builder">
               <Button size="lg" className="min-w-[200px]">
                 Build from Ingredients
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+            <Link href="/recipe-management">
+              <Button size="lg" className="min-w-[200px] bg-orange-500 hover:bg-orange-600">
+                Recipe Management
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>

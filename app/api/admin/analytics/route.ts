@@ -63,8 +63,7 @@ export async function GET(req: NextRequest) {
         } },
         { $unwind: '$recipe.ingredients' },
         { $group: { _id: '$recipe.ingredients.name', count: { $sum: 1 } } },
-        { $sort: { count: -1 } },
-        { $limit: 10 }
+        { $sort: { count: -1 } }
       ];
       
       const topIngredients = await db.collection('recipeTracking')
@@ -121,8 +120,7 @@ export async function GET(req: NextRequest) {
       const searchPipeline = [
         { $match: { timestamp: { $gte: startDate, $lte: endDate } } },
         { $group: { _id: '$query', count: { $sum: 1 } } },
-        { $sort: { count: -1 } },
-        { $limit: 10 }
+        { $sort: { count: -1 } }
       ];
       
       const topSearches = await db.collection('searchQueries')
@@ -195,7 +193,6 @@ export async function GET(req: NextRequest) {
       const recentRecipes = await db.collection('recipeTracking')
         .find({ timestamp: { $gte: startDate, $lte: endDate } })
         .sort({ timestamp: -1 })
-        .limit(10)
         .project({
           userId: 1,
           recipe: 1,  // Include the complete recipe object
@@ -208,7 +205,6 @@ export async function GET(req: NextRequest) {
       const recentSearches = await db.collection('searchQueries')
         .find({ timestamp: { $gte: startDate, $lte: endDate } })
         .sort({ timestamp: -1 })
-        .limit(10)
         .project({
           userId: 1,
           query: 1,
