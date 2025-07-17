@@ -27,19 +27,52 @@ const NUTRIENT_IDS = {
   potassium: '306',       // Potassium
 };
 
-export async function searchIngredients(query: string): Promise<UsdaIngredient[]> {
+export async function searchIngredients(
+  query: string,
+  pageNumber: number = 1
+): Promise<{
+  foods: UsdaIngredient[];
+  totalPages: number;
+  currentPage: number;
+}> {
   try {
-    const response = await fetch(`${USDA_API_BASE}/foods/search?api_key=${API_KEY}&query=${encodeURIComponent(query)}&pageSize=25&dataType=Foundation,SR Legacy`);
-    
+    const response = await fetch(
+      `${USDA_API_BASE}/foods/search?api_key=${API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: query,
+          dataType: [
+            "Foundation",
+            "SR Legacy",
+            "FNDDS",
+            "Branded",
+            "Experimental",
+          ],
+          pageSize: 50,
+          pageNumber: pageNumber,
+          requireAllWords: false,
+        }),
+      }
+    );
+
     if (!response.ok) {
-      throw new Error('Failed to fetch ingredients');
+      throw new Error("Failed to fetch ingredients");
     }
 
     const data = await response.json();
-    return data.foods || [];
+
+    return {
+      foods: data.foods || [],
+      totalPages: data.totalPages,
+      currentPage: data.currentPage,
+    };
   } catch (error) {
-    console.error('Error searching ingredients:', error);
-    return [];
+    console.error("Error searching ingredients:", error);
+    return { foods: [], totalPages: 0, currentPage: 1 };
   }
 }
 
