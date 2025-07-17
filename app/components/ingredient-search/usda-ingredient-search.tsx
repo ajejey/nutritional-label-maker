@@ -24,19 +24,22 @@ export function USDAIngredientSearch({ onIngredientAdd }: USDAIngredientSearchPr
   const [unit, setUnit] = useState<string>('g');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const handleSearch = async () => {
+  const handleSearch = async (page: number = 1) => {
     if (!searchQuery.trim()) {
-      setError('Please enter a search term');
+      setError("Please enter a search term");
       return;
     }
 
     setLoading(true);
     setError(null);
+
     try {
       const { foods, totalPages, currentPage } = await searchIngredients(
         searchQuery,
-        1
+        page
       );
 
       trackSearchQuery(searchQuery, foods.length);
@@ -45,7 +48,7 @@ export function USDAIngredientSearch({ onIngredientAdd }: USDAIngredientSearchPr
         setError("No ingredients found. Try different search terms.");
       }
 
-      setSearchResults(foods);
+      setSearchResults(page === 1 ? foods : [...searchResults, ...foods]);
       setCurrentPage(currentPage);
       setTotalPages(totalPages);
     } catch (error) {
@@ -144,7 +147,7 @@ export function USDAIngredientSearch({ onIngredientAdd }: USDAIngredientSearchPr
               )}
             </div>
             <Button 
-              onClick={handleSearch} 
+              onClick={() => handleSearch()}
               disabled={loading}
               variant="secondary"
               size="lg"
@@ -185,6 +188,16 @@ export function USDAIngredientSearch({ onIngredientAdd }: USDAIngredientSearchPr
                   ))}
                 </div>
               </ScrollArea>
+              {currentPage < totalPages && (
+                <div className="mt-4 flex justify-center">
+                  <Button
+                    onClick={() => handleSearch(currentPage + 1)}
+                    disabled={loading}
+                  >
+                    {loading ? "Loading..." : "Load More"}
+                  </Button>
+                </div>
+              )}
             </Card>
           )}
         </div>
