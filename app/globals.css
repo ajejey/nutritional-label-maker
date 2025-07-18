@@ -87,3 +87,7 @@
 .animate-shimmer {
   animation: shimmer 2s infinite;
 }
+
+.no-ads .google-auto-placed {
+  display: none !important;
+}
