@@ -224,7 +224,7 @@ const LabelPreview = ({
         </div>
 
         {/* Label Preview */}
-        <div id="nutrition-label" className="flex justify-center bg-white rounded-lg">
+        <div id="nutrition-label" className="flex justify-center bg-white rounded-lg no-ads">
           {LabelComponent && <LabelComponent data={nutritionData} />}
         </div>
 
